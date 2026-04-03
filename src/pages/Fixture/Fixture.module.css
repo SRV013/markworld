@@ -60,3 +60,9 @@
     padding: var(--space-4);
   }
 }
+
+@media (max-width: 568px) {
+  .page {
+    padding: var(--space-2);
+  }
+}
