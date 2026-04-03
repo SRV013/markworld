@@ -65,6 +65,15 @@
 }
 
 .flag {
+  width: 24px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* clase original — se mantiene por si se usa en otro lugar */
+.flagLegacy {
   font-size: 1.4rem;
   line-height: 1;
   flex-shrink: 0;

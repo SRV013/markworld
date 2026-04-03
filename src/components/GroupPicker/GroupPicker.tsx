@@ -6,14 +6,12 @@ const POSITION_CLASS = [styles.gold, styles.silver, styles.bronze];
 
 interface GroupPickerProps {
   group: Group;
-  selected: string[]; // ['1°team', '2°team', '3°team']
+  selected: string[];
   onToggle: (teamName: string) => void;
 }
 
 export function GroupPicker({ group, selected, onToggle }: GroupPickerProps) {
   const allFilled = selected.length === 3;
-  const getFlagUrl = (code: string) =>
-    `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
 
   return (
     <div className={styles.wrapper}>
@@ -39,9 +37,7 @@ export function GroupPicker({ group, selected, onToggle }: GroupPickerProps) {
                 onClick={() => onToggle(team.name)}
                 aria-pressed={isPicked}
               >
-                <img src={getFlagUrl(team.code)} alt={team.name} width={20} />
-
-                {/* <span className={styles.flag}>{team.flag}</span> */}
+                <span className={`fi fi-${team.code.toLowerCase()} ${styles.flag}`} />
                 <span className={styles.name}>{team.name}</span>
 
                 {isPicked && (

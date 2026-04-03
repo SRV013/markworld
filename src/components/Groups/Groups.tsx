@@ -2,20 +2,17 @@ import type { Group, Confederation } from "../../types/worldCup";
 import styles from "./Groups.module.css";
 
 const CONF_LABEL: Record<Confederation, string> = {
-  UEFA: "UEFA",
+  UEFA:     "UEFA",
   CONMEBOL: "CONMEBOL",
   CONCACAF: "CONCACAF",
-  CAF: "CAF",
-  AFC: "AFC",
-  OFC: "OFC",
+  CAF:      "CAF",
+  AFC:      "AFC",
+  OFC:      "OFC",
 };
 
 interface GroupCardProps {
   group: Group;
 }
-
-const getFlagUrl = (code:string) =>
-  `https://flagcdn.com/w40/${code.toLowerCase()}.png`;
 
 function GroupCard({ group }: GroupCardProps) {
   return (
@@ -27,12 +24,9 @@ function GroupCard({ group }: GroupCardProps) {
       <ul className={styles.teamList}>
         {group.teams.map((team) => (
           <li key={team.name} className={styles.teamRow}>
-            {/* <span className={styles.flag}>{team.flag}</span> */}
-            <img src={getFlagUrl(team.code)} alt={team.name} width={20} />
+            <span className={`fi fi-${team.code.toLowerCase()} ${styles.flag}`} />
             <span className={styles.teamName}>{team.name}</span>
-            <span className={styles.conf}>
-              {CONF_LABEL[team.confederation]}
-            </span>
+            <span className={styles.conf}>{CONF_LABEL[team.confederation]}</span>
           </li>
         ))}
       </ul>

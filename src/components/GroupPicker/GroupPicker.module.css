@@ -88,9 +88,11 @@
 }
 
 .flag {
-  font-size: 1.6rem;
-  line-height: 1;
+  width: 28px;
+  height: 21px;
   flex-shrink: 0;
+  border-radius: 2px;
+  overflow: hidden;
 }
 
 .name {

@@ -51,7 +51,7 @@ const FLAGS: Record<string, string> = {
   Austria: '🇦🇹', España: '🇪🇸', Hungría: '🇭🇺', Suiza: '🇨🇭',
   Suecia: '🇸🇪', Holanda: '🇳🇱', Egipto: '🇪🇬', Cuba: '🇨🇺',
   Polonia: '🇵🇱', Noruega: '🇳🇴', 'Indias Orientales Holandesas': '🇮🇩',
-  Inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧󁿢', Escocia: '🏴󠁧󠁢󠁳󠁣󠁴󁿢', Gales: '🏴󠁧󠁢󠁷󠁬󠁳󁿢',
+  Inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧', Escocia: '🏴󠁧󠁢󠁳󠁣󠁴', Gales: '🏴󠁧󠁢󠁷󠁬󠁳',
   'Alemania Occidental': '🇩🇪', 'Unión Soviética': '🇷🇺', 'Irlanda del Norte': '🇬🇧',
   Portugal: '🇵🇹', 'Corea del Norte': '🇰🇵', Israel: '🇮🇱',
   Marruecos: '🇲🇦', 'El Salvador': '🇸🇻', 'Alemania Oriental': '🇩🇪',
