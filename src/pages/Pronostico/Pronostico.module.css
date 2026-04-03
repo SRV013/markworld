@@ -102,7 +102,7 @@
 
 .stepActive {
   border-color: var(--color-primary-400);
-  color: var(--color-primary-500);
+  /* color: var(--color-primary-500); */
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
@@ -201,9 +201,14 @@
   color: var(--color-text);
 }
 
-/* ---- MOBILE ---- */
-@media (max-width: 768px) {
+@media (width< 768px) {
   .page {
     padding: var(--space-4);
+  }
+}
+
+@media (width< 500px) {
+  .page {
+    padding: var(--space-2);
   }
 }
