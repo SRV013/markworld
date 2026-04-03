@@ -1,0 +1,126 @@
+.wrapper {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 480px;
+  width: 100%;
+}
+
+/* ---- HEADER ---- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-600),
+    var(--color-secondary-600)
+  );
+}
+
+.groupLabel {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.groupId {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* ---- HINT ---- */
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---- TEAM LIST ---- */
+.list {
+  list-style: none;
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.teamBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.teamBtn:hover:not(.eliminated) {
+  border-color: var(--color-primary-400);
+  background-color: var(--color-hover);
+}
+
+.teamBtn.picked {
+  border-color: var(--color-primary-400);
+  background-color: var(--color-primary-50);
+}
+
+[data-theme='dark'] .teamBtn.picked {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.teamBtn.eliminated {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.flag {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  font-weight: 500;
+}
+
+/* ---- BADGES ---- */
+.badge {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gold   { background: #fbbf24; color: #1a1a1a; }
+.silver { background: #94a3b8; color: #1a1a1a; }
+.bronze { background: #c2855a; color: #ffffff; }
+
+.badgeOut {
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
