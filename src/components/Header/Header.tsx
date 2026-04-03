@@ -5,8 +5,9 @@ import styles from './Header.module.css'
 
 const NAV_LINKS = [
   { to: '/',        label: 'Home'     },
-  { to: '/fixture', label: 'Fixture'  },
-  { to: '/historia',label: 'Historia' },
+  { to: '/fixture', label: 'Fixture 2026'  },
+  { to: '/mundiales',label: 'Mundiales' },
+  { to: '/campeones',label: 'Campeones' }
 ]
 
 export function Header() {

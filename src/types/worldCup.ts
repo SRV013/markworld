@@ -3,6 +3,7 @@ export type Confederation = 'UEFA' | 'CONMEBOL' | 'CONCACAF' | 'CAF' | 'AFC' | '
 export interface Team {
   name: string
   flag: string
+  code: string
   confederation: Confederation
 }
 
