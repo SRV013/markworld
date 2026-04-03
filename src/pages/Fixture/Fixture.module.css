@@ -61,7 +61,7 @@
   }
 }
 
-@media (max-width: 568px) {
+@media (max-width: 500px) {
   .page {
     padding: var(--space-2);
   }
