@@ -3,6 +3,7 @@ import { useTheme } from './hooks/useTheme'
 import { Header } from './components/Header/Header'
 import { Fixture } from './pages/Fixture/Fixture'
 import { Pronostico } from './pages/Pronostico/Pronostico'
+import { Historia } from './pages/Historia/Historia'
 import styles from './App.module.css'
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
             <Route path="/" element={<div>Home</div>} />
             <Route path="/fixture" element={<Fixture />} />
             <Route path="/pronostico" element={<Pronostico />} />
-            <Route path="/historia" element={<div>Historia</div>} />
+            <Route path="/mundiales" element={<Historia />} />
           </Routes>
         </main>
       </div>

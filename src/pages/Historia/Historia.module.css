@@ -1,0 +1,361 @@
+/* ── Página ── */
+.page {
+  padding: var(--space-4);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.pageHeader {
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+/* ── Layout dos columnas ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (width > 1000px) {
+  .layout {
+    grid-template-columns: 1fr 300px;
+  }
+}
+
+/* ── Lista de copas ── */
+.cups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Tarjeta de cada copa ── */
+.cupCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Header: año + sede */
+.cupHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-700),
+    var(--color-secondary-700)
+  );
+  color: #fff;
+}
+
+.year {
+  font-size: var(--font-size-4xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.cupInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.host {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.teamsCount {
+  font-size: var(--font-size-sm);
+  opacity: 0.7;
+}
+
+/* ── Podio ── */
+.podium {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.podiumItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+  border-right: 1px solid var(--color-border);
+}
+
+.podiumItem:last-child {
+  border-right: none;
+}
+
+.podiumRank {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.podiumFlag {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.podiumName {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.podiumLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gold {
+  background: color-mix(in srgb, #f59e0b 12%, var(--color-bg-subtle));
+}
+
+.gold .podiumName {
+  color: #92400e;
+}
+
+[data-theme='dark'] .gold .podiumName,
+@media (prefers-color-scheme: dark) {
+  .gold .podiumName {
+    color: #fcd34d;
+  }
+}
+
+.silver {
+  background: color-mix(in srgb, #94a3b8 10%, var(--color-bg-subtle));
+}
+
+.bronze {
+  background: color-mix(in srgb, #b45309 10%, var(--color-bg-subtle));
+}
+
+.bronze .podiumName {
+  color: #92400e;
+}
+
+/* ── Equipos participantes ── */
+.teamsSection {
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-bg);
+}
+
+.teamsSectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.teamsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.teamRow {
+  display: grid;
+  grid-template-columns: 2rem 1.8rem 1fr;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 5px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.teamRow:hover {
+  background: var(--color-hover);
+}
+
+.teamPos {
+  text-align: right;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.teamFlag {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.teamName {
+  color: var(--color-text);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: sticky;
+  top: var(--space-4);
+}
+
+.sideSection {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sideTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-text);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Campeones */
+.championsList {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.championRow {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.championRow:last-child {
+  border-bottom: none;
+}
+
+.championRow:hover {
+  background: var(--color-hover);
+}
+
+.champFlag {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.champName {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.champTrophies {
+  font-size: var(--font-size-xs);
+  letter-spacing: -2px;
+}
+
+.champCount {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary-600);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.2rem;
+  text-align: right;
+}
+
+/* Ranking */
+.rankNote {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+  line-height: 1.5;
+}
+
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.rankRow {
+  display: grid;
+  grid-template-columns: 2rem 1.5rem 1fr 2.8rem;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 5px var(--space-4);
+  border-bottom: 1px solid transparent;
+  font-size: var(--font-size-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.rankRow:hover {
+  background: var(--color-hover);
+}
+
+.rankTop {
+  background: color-mix(in srgb, var(--color-primary-500) 8%, var(--color-bg));
+  font-weight: 700;
+}
+
+.rankNum {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.rankFlag {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.rankName {
+  color: var(--color-text);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rankPts {
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-primary-600);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-xs);
+}
+
+@media (width > 500px) {
+  .page {
+    padding: var(--space-8);
+  }
+}

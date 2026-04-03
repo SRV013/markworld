@@ -5,13 +5,14 @@ import { persist } from 'zustand/middleware'
 type Picks = Record<string, string[]>
 
 interface PronosticoState {
-  phase: 'intro' | 'picking'
+  phase: 'intro' | 'picking' | 'bracket'
   currentGroupIndex: number
   picks: Picks
   start: () => void
   toggleTeam: (groupId: string, teamName: string) => void
   next: (totalGroups: number) => void
   prev: () => void
+  startBracket: () => void
   reset: () => void
 }
 
@@ -48,6 +49,8 @@ export const usePronosticoStore = create<PronosticoState>()(
         set((state) => ({
           currentGroupIndex: Math.max(state.currentGroupIndex - 1, 0),
         })),
+
+      startBracket: () => set({ phase: 'bracket' }),
 
       reset: () => set({ phase: 'intro', currentGroupIndex: 0, picks: {} }),
     }),
