@@ -34,5 +34,11 @@
 }
 
 .main {
-  padding: var(--space-8);
+  padding: var(--space-3);
+}
+
+@media (width> 768px) {
+  .main {
+    padding: var(--space-8);
+  }
 }
