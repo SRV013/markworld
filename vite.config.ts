@@ -24,6 +24,9 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Toma control inmediato sin esperar a que el usuario cierre pestañas
+        skipWaiting: true,
+        clientsClaim: true,
         // Solo precachear JS, CSS, HTML e íconos pequeños
         globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
         // Imágenes pesadas se sirven por runtime caching (no precache)
