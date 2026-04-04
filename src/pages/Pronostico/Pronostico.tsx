@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { usePronosticoStore } from '@/store/pronosticoStore'
 import { useBracketStore } from '@/store/bracketStore'
 import { GroupPicker } from '@/components/GroupPicker/GroupPicker'
@@ -15,6 +16,7 @@ export function Pronostico() {
     toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset,
   } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket } = useBracketStore()
+  const pickerRef = useRef<HTMLDivElement>(null)
 
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
@@ -142,6 +144,13 @@ export function Pronostico() {
   const allGroupsDone = GROUPS.every((g) => (picks[g.id] ?? []).length === 3)
   const completedCount = GROUPS.filter((g) => (picks[g.id] ?? []).length === 3).length
 
+  // Al llegar al último grupo, centrar verticalmente el picker
+  useEffect(() => {
+    if (isLast && pickerRef.current) {
+      pickerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [isLast])
+
   return (
     <div className={styles.page}>
 
@@ -166,7 +175,7 @@ export function Pronostico() {
       </p>
 
       {/* Picker */}
-      <div className={styles.pickerWrap}>
+      <div className={styles.pickerWrap} ref={pickerRef}>
         <GroupPicker
           group={group}
           selected={selected}
