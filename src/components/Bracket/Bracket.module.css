@@ -3,6 +3,12 @@
   padding-bottom: var(--space-8);
 }
 
+@media (max-width: 768px) {
+  .outer {
+    padding-right: 100px;
+  }
+}
+
 /* ── Encabezados de ronda ─────────────────── */
 .headers {
   display: flex;
