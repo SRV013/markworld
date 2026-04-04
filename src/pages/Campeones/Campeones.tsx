@@ -1,28 +1,29 @@
 import { useState } from 'react'
-import { historyCup } from '../../data/historyCup'
-import { PLAYERS_BY_YEAR } from '../../data/championsPlayers'
-import img1930 from '../../assets/1930.jpeg'
-import img1934 from '../../assets/1934.jpeg'
-import img1938 from '../../assets/1938.jpeg'
-import img1950 from '../../assets/1950.jpeg'
-import img1954 from '../../assets/1954.jpg'
-import img1958 from '../../assets/1958.jpeg'
-import img1962 from '../../assets/1962.jpeg'
-import img1966 from '../../assets/1966.jpeg'
-import img1970 from '../../assets/1970.jpeg'
-import img1974 from '../../assets/1974.webp'
-import img1978 from '../../assets/1978.png'
-import img1982 from '../../assets/1982.jpeg'
-import img1986 from '../../assets/1986.webp'
-import img1990 from '../../assets/1990.jpeg'
-import img1994 from '../../assets/1994.webp'
-import img1998 from '../../assets/1998.avif'
-import img2002 from '../../assets/2002.webp'
-import img2006 from '../../assets/2006.webp'
-import img2010 from '../../assets/2010.jpg'
-import img2014 from '../../assets/2014.avif'
-import img2018 from '../../assets/2018.jpg'
-import img2022 from '../../assets/2022.avif'
+import { Helmet } from 'react-helmet-async'
+import { historyCup } from '@/data/historyCup'
+import { PLAYERS_BY_YEAR } from '@/data/championsPlayers'
+import img1930 from '@/assets/1930.jpeg'
+import img1934 from '@/assets/1934.jpeg'
+import img1938 from '@/assets/1938.jpeg'
+import img1950 from '@/assets/1950.jpeg'
+import img1954 from '@/assets/1954.webp'
+import img1958 from '@/assets/1958.jpeg'
+import img1962 from '@/assets/1962.jpeg'
+import img1966 from '@/assets/1966.jpeg'
+import img1970 from '@/assets/1970.jpeg'
+import img1974 from '@/assets/1974.webp'
+import img1978 from '@/assets/1978.webp'
+import img1982 from '@/assets/1982.webp'
+import img1986 from '@/assets/1986.webp'
+import img1990 from '@/assets/1990.jpeg'
+import img1994 from '@/assets/1994.webp'
+import img1998 from '@/assets/1998.avif'
+import img2002 from '@/assets/2002.webp'
+import img2006 from '@/assets/2006.webp'
+import img2010 from '@/assets/2010.webp'
+import img2014 from '@/assets/2014.avif'
+import img2018 from '@/assets/2018.webp'
+import img2022 from '@/assets/2022.avif'
 import styles from './Campeones.module.css'
 
 const IMAGES: Record<number, string> = {
@@ -73,6 +74,12 @@ export function Campeones() {
 
   return (
     <div className={styles.page}>
+      <Helmet>
+        <title>Campeones Mundiales de Fútbol — mark World</title>
+        <meta name="description" content="Todos los campeones de la Copa del Mundo desde Uruguay 1930 hasta Argentina 2022. Planteles, jugadores y técnicos de cada selección campeona." />
+        <meta property="og:title" content="Campeones Mundiales — mark World" />
+        <meta property="og:description" content="22 selecciones campeonas, sus planteles completos y dorsales. Fútbol mundial desde 1930." />
+      </Helmet>
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>Campeones Mundiales</h1>
         <p className={styles.subtitle}>
@@ -90,7 +97,7 @@ export function Campeones() {
             {/* Imagen */}
             <div className={styles.imgBox}>
               {IMAGES[year]
-                ? <img src={IMAGES[year]} alt={`${champion} ${year}`} className={styles.img} />
+                ? <img src={IMAGES[year]} alt={`${champion} ${year}`} className={styles.img} loading="lazy" decoding="async" />
                 : <span className={styles.imgNA}>Sin imagen</span>
               }
               <div className={styles.eyeOverlay}>
@@ -130,9 +137,13 @@ export function Campeones() {
                 <p className={styles.modalSub}>Campeón {modalData.anio}</p>
               </div>
             </div>
+            <p className={styles.modalDt}>DT: {modalData.dt}</p>
             <ul className={styles.playerList}>
               {modalData.jugadores.map((jugador) => (
-                <li key={jugador} className={styles.playerItem}>{jugador}</li>
+                <li key={jugador.nombre} className={styles.playerItem}>
+                  <span className={styles.playerNum}>{jugador.numero}</span>
+                  <span>{jugador.nombre}</span>
+                </li>
               ))}
             </ul>
           </div>
