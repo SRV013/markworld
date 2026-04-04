@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { ROUNDS, ROUND_LABELS, ROUND_MATCH_COUNT } from '@/types/bracket'
 import type { BracketMatch, Round } from '@/types/bracket'
 import { useBracketStore } from '@/store/bracketStore'
@@ -147,16 +148,26 @@ function ConnectorSVG({ fromRoundIdx, fromCount, left }: ConnectorProps) {
 // ─────────── Bracket principal ──────────────
 export function Bracket() {
   const { matches, pickWinner } = useBracketStore()
+  const outerRef = useRef<HTMLDivElement>(null)
 
   const byRound = ROUNDS.reduce<Record<Round, BracketMatch[]>>(
     (acc, r) => { acc[r] = matches.filter((m) => m.round === r); return acc },
     { R32: [], R16: [], QF: [], SF: [], F: [] }
   )
 
+  const r32Done = byRound.R32.length === 16 && byRound.R32.every((m) => m.winner !== null)
+
+  // Cuando todos los 16avos tienen ganador → scroll suave al inicio de R16
+  useEffect(() => {
+    if (r32Done && outerRef.current) {
+      outerRef.current.scrollTo({ left: COL, behavior: 'smooth' })
+    }
+  }, [r32Done])
+
   const totalWidth = ROUNDS.length * MW + (ROUNDS.length - 1) * CW
 
   return (
-    <div className={styles.outer}>
+    <div ref={outerRef} className={styles.outer}>
       {/* Encabezados de ronda */}
       <div className={styles.headers} style={{ width: totalWidth }}>
         {ROUNDS.map((r, ri) => (
