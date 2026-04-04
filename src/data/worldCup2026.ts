@@ -1,5 +1,5 @@
 import { COUNTRIES } from './countries'
-import type { Group } from '../types/worldCup'
+import type { Group } from '@/types/worldCup'
 
 const c = (code: string) => COUNTRIES[code]
 

@@ -1,4 +1,4 @@
-import type { BracketMatch } from '../types/bracket'
+import type { BracketMatch } from '@/types/bracket'
 
 type Picks = Record<string, string[]>
 

@@ -1,4 +1,4 @@
-import type { Country } from '../types/worldCup'
+import type { Country } from '@/types/worldCup'
 
 /**
  * Datos maestros de los 48 países del Mundial 2026.

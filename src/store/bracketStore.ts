@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { BracketMatch } from '../types/bracket'
+import type { BracketMatch } from '@/types/bracket'
 
 interface BracketState {
   matches: BracketMatch[]

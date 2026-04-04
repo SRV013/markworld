@@ -1,4 +1,4 @@
-import type { Group } from "../../types/worldCup";
+import type { Group } from "@/types/worldCup";
 import styles from "./GroupPicker.module.css";
 
 const POSITION_LABEL = ["1°", "2°", "3°"];

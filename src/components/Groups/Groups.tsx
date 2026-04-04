@@ -1,4 +1,4 @@
-import type { Group, Confederation } from "../../types/worldCup";
+import type { Group, Confederation } from "@/types/worldCup";
 import styles from "./Groups.module.css";
 
 const CONF_LABEL: Record<Confederation, string> = {

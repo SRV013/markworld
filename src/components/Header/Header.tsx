@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '@/hooks/useTheme'
 import styles from './Header.module.css'
 
 const NAV_LINKS = [

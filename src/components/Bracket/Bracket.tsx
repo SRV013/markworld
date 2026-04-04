@@ -1,7 +1,7 @@
-import { ROUNDS, ROUND_LABELS, ROUND_MATCH_COUNT } from '../../types/bracket'
-import type { BracketMatch, Round } from '../../types/bracket'
-import { useBracketStore } from '../../store/bracketStore'
-import { GROUPS } from '../../data/worldCup2026'
+import { ROUNDS, ROUND_LABELS, ROUND_MATCH_COUNT } from '@/types/bracket'
+import type { BracketMatch, Round } from '@/types/bracket'
+import { useBracketStore } from '@/store/bracketStore'
+import { GROUPS } from '@/data/worldCup2026'
 import styles from './Bracket.module.css'
 
 // ─────────── Constantes de layout ───────────

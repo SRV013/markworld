@@ -1,4 +1,4 @@
-import type { Team } from '../../types/worldCup'
+import type { Team } from '@/types/worldCup'
 import styles from './ThirdPlacePicker.module.css'
 
 export interface ThirdEntry {
