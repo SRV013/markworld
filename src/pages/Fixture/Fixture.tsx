@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom'
-import { Groups } from '../../components/Groups/Groups'
-import { GROUPS } from '../../data/worldCup2026'
+import { Helmet } from 'react-helmet-async'
+import { Groups } from '@/components/Groups/Groups'
+import { GROUPS } from '@/data/worldCup2026'
 import styles from './Fixture.module.css'
 
 export function Fixture() {
   return (
     <div className={styles.page}>
+      <Helmet>
+        <title>Fixture Copa del Mundo 2026 — mark World</title>
+        <meta name="description" content="Fixture completo de la Copa del Mundo 2026. 48 equipos, 12 grupos, sedes en USA, México y Canadá." />
+        <meta property="og:title" content="Fixture Mundial 2026 — mark World" />
+        <meta property="og:description" content="Todos los grupos y equipos del Mundial de Fútbol 2026 con 48 selecciones." />
+      </Helmet>
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.title}>Fixture</h1>

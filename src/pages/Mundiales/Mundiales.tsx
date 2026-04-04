@@ -1,4 +1,5 @@
-import { historyCup } from '../../data/historyCup'
+import { Helmet } from 'react-helmet-async'
+import { historyCup } from '@/data/historyCup'
 import styles from './Mundiales.module.css'
 
 type TeamResult = { team: string; position: number; points: number }
@@ -86,6 +87,12 @@ const allTimeRanking = (() => {
 export function Mundiales() {
   return (
     <div className={styles.page}>
+      <Helmet>
+        <title>Historia de Mundiales — mark World</title>
+        <meta name="description" content="Todas las ediciones de la Copa del Mundo desde Uruguay 1930 hasta Qatar 2022. Podios, participantes y ranking histórico de campeones." />
+        <meta property="og:title" content="Historia de Mundiales de Fútbol — mark World" />
+        <meta property="og:description" content="22 ediciones, podios completos y ranking acumulado de todos los mundiales." />
+      </Helmet>
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>Historia de Mundiales</h1>
         <p className={styles.subtitle}>{cups.length} ediciones · 1930 – 2022</p>

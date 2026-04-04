@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import styles from './Home.module.css'
 
 const SECTIONS = [
@@ -32,6 +33,13 @@ const SECTIONS = [
 export function Home() {
   return (
     <div className={styles.page}>
+      <Helmet>
+        <title>mark World — Estadísticas e Historia de los Mundiales de Fútbol</title>
+        <meta name="description" content="Estadísticas, historia y pronósticos de todos los Mundiales de Fútbol desde 1930. Fixture 2026, campeones históricos, brackets y más." />
+        <meta property="og:title" content="mark World — Mundiales de Fútbol" />
+        <meta property="og:description" content="Toda la Copa del Mundo en un solo lugar. 22 ediciones, 48 equipos 2026, pronósticos y estadísticas." />
+        <meta property="og:type" content="website" />
+      </Helmet>
 
       {/* Hero */}
       <section className={styles.hero}>

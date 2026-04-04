@@ -1,31 +1,39 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useTheme } from './hooks/useTheme'
-import { Header } from './components/Header/Header'
-import { Home } from './pages/Home/Home'
-import { Fixture } from './pages/Fixture/Fixture'
-import { Pronostico } from './pages/Pronostico/Pronostico'
-import { Mundiales } from './pages/Mundiales/Mundiales'
-import { Campeones } from './pages/Campeones/Campeones'
+import { HelmetProvider } from 'react-helmet-async'
+import { useTheme } from '@/hooks/useTheme'
+import { Header } from '@/components/Header/Header'
+import { Fallback } from '@/components/Fallback/Fallback'
 import styles from './App.module.css'
+
+const Home       = lazy(() => import('@/pages/Home/Home').then(m => ({ default: m.Home })))
+const Mundiales  = lazy(() => import('@/pages/Mundiales/Mundiales').then(m => ({ default: m.Mundiales })))
+const Campeones  = lazy(() => import('@/pages/Campeones/Campeones').then(m => ({ default: m.Campeones })))
+const Fixture    = lazy(() => import('@/pages/Fixture/Fixture').then(m => ({ default: m.Fixture })))
+const Pronostico = lazy(() => import('@/pages/Pronostico/Pronostico').then(m => ({ default: m.Pronostico })))
 
 function App() {
   const { theme } = useTheme()
 
   return (
-    <BrowserRouter>
-      <div className={styles.wrapper} data-theme={theme}>
-        <Header />
-        <main className={styles.main}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/fixture" element={<Fixture />} />
-            <Route path="/pronostico" element={<Pronostico />} />
-            <Route path="/mundiales" element={<Mundiales />} />
-            <Route path="/campeones" element={<Campeones />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <div className={styles.wrapper} data-theme={theme}>
+          <Header />
+          <main className={styles.main}>
+            <Suspense fallback={<Fallback />}>
+              <Routes>
+                <Route path="/"           element={<Home />} />
+                <Route path="/fixture"    element={<Fixture />} />
+                <Route path="/pronostico" element={<Pronostico />} />
+                <Route path="/mundiales"  element={<Mundiales />} />
+                <Route path="/campeones"  element={<Campeones />} />
+              </Routes>
+            </Suspense>
+          </main>
+        </div>
+      </BrowserRouter>
+    </HelmetProvider>
   )
 }
 
