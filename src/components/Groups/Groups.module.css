@@ -107,3 +107,33 @@
     display: none;
   }
 }
+
+/* ---- MOBILE PEQUEÑO < 500px ---- */
+@media (max-width: 499px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+  }
+
+  .cardHeader {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .groupId {
+    font-size: var(--font-size-xl);
+  }
+
+  .teamRow {
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .flag {
+    width: 18px;
+    height: 13px;
+  }
+
+  .teamName {
+    font-size: var(--font-size-xs);
+  }
+}
