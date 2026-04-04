@@ -57,21 +57,14 @@ export function Home() {
 
       {/* Cards de secciones */}
       <section className={styles.sections}>
-        {SECTIONS.map(({ to, icon, title, desc, soon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={`${styles.card} ${soon ? styles.cardSoon : ''}`}
-          >
+        {SECTIONS.map(({ to, icon, title, desc }) => (
+          <NavLink key={to} to={to} className={styles.card}>
             <span className={styles.cardIcon}>{icon}</span>
             <div className={styles.cardBody}>
-              <h2 className={styles.cardTitle}>
-                {title}
-                {soon && <span className={styles.soonBadge}>Próximamente</span>}
-              </h2>
+              <h2 className={styles.cardTitle}>{title}</h2>
               <p className={styles.cardDesc}>{desc}</p>
             </div>
-            {!soon && <span className={styles.cardArrow}>→</span>}
+            <span className={styles.cardArrow}>→</span>
           </NavLink>
         ))}
       </section>
