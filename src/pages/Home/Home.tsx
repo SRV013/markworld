@@ -25,8 +25,7 @@ const SECTIONS = [
     to: '/campeones',
     icon: '🥇',
     title: 'Campeones',
-    desc: 'Estadísticas detalladas de todos los campeones mundiales. Próximamente.',
-    soon: true,
+    desc: 'Los 22 campeones del mundo. Planteles completos con dorsales, técnicos y fotos de cada edición.',
   },
 ]
 
