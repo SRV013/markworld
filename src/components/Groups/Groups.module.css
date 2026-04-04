@@ -108,8 +108,8 @@
   }
 }
 
-/* ---- MOBILE PEQUEÑO < 500px ---- */
-@media (max-width: 499px) {
+/* ---- MOBILE PEQUEÑO < 580px ---- */
+@media (max-width: 579px) {
   .grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-2);
