@@ -155,14 +155,17 @@ export function Bracket() {
     { R32: [], R16: [], QF: [], SF: [], F: [] }
   )
 
-  const r32Done = byRound.R32.length === 16 && byRound.R32.every((m) => m.winner !== null)
+  // Primer round con algún partido sin ganador → ahí hay que trabajar
+  const activeRoundIdx = ROUNDS.findIndex((r) =>
+    byRound[r].some((m) => m.winner === null)
+  )
+  const scrollTarget = (activeRoundIdx === -1 ? ROUNDS.length - 1 : activeRoundIdx) * COL
 
-  // Cuando todos los 16avos tienen ganador → scroll suave al inicio de R16
+  // Scroll automático al round activo: avanza al completar una ronda,
+  // retrocede si se deselecciona un ganador
   useEffect(() => {
-    if (r32Done && outerRef.current) {
-      outerRef.current.scrollTo({ left: COL, behavior: 'smooth' })
-    }
-  }, [r32Done])
+    outerRef.current?.scrollTo({ left: scrollTarget, behavior: 'smooth' })
+  }, [scrollTarget])
 
   const totalWidth = ROUNDS.length * MW + (ROUNDS.length - 1) * CW
 
