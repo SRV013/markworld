@@ -3,7 +3,7 @@ export type Round = 'R32' | 'R16' | 'QF' | 'SF' | 'F'
 export const ROUNDS: Round[] = ['R32', 'R16', 'QF', 'SF', 'F']
 
 export const ROUND_LABELS: Record<Round, string> = {
-  R32: 'Ronda de 32',
+  R32: '16avos',
   R16: 'Octavos',
   QF:  'Cuartos',
   SF:  'Semis',

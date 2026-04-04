@@ -23,9 +23,9 @@ function centerY(roundIdx: number, matchIdx: number): number {
   return getTop(roundIdx, matchIdx) + MH / 2
 }
 
-// ─────────── Code lookup (name → ISO code) ──
-const codeMap = new Map<string, string>()
-GROUPS.forEach((g) => g.teams.forEach((t) => codeMap.set(t.name, t.code)))
+// ─────────── flagIcon lookup (name → flagIcon) ──
+const flagIconMap = new Map<string, string>()
+GROUPS.forEach((g) => g.teams.forEach((t) => flagIconMap.set(t.name, t.flagIcon)))
 
 // ─────────── TeamSlot ───────────────────────
 interface TeamSlotProps {
@@ -50,7 +50,7 @@ function TeamSlot({ team, isWinner, isFinal, disabled, onClick }: TeamSlotProps)
     >
       {team && (
         <span
-          className={`fi fi-${(codeMap.get(team) ?? 'un').toLowerCase()} ${styles.slotFlag}`}
+          className={`fi fi-${flagIconMap.get(team) ?? 'un'} ${styles.slotFlag}`}
         />
       )}
       <span className={styles.slotName}>{team ?? '—'}</span>

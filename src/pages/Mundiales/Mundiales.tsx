@@ -1,5 +1,5 @@
 import { historyCup } from '../../data/historyCup'
-import styles from './Historia.module.css'
+import styles from './Mundiales.module.css'
 
 type TeamResult = { team: string; position: number; points: number }
 type WorldCup = {
@@ -11,15 +11,55 @@ type WorldCup = {
   teams: TeamResult[]
 }
 
+// ── Orden: más reciente primero ──────────────────────────────
 const cups: WorldCup[] = (historyCup as any[])
   .flatMap((item) => (Array.isArray(item) ? item : [item]))
-  .sort((a: WorldCup, b: WorldCup) => a.year - b.year)
+  .sort((a: WorldCup, b: WorldCup) => b.year - a.year)
 
-// Normaliza "Alemania Occidental" → "Alemania" para agrupar títulos
+// ── Normalización de nombres históricos ──────────────────────
 function normalizeTeam(name: string) {
-  return name === 'Alemania Occidental' ? 'Alemania' : name
+  if (name === 'Alemania Occidental') return 'Alemania'
+  return name
 }
 
+// ── Mapa nombre → flagIcon (código para flag-icons) ──────────
+const FLAG_ICON: Record<string, string> = {
+  // Participantes del Mundial 2026
+  México: 'mx', Sudáfrica: 'za', 'Corea del Sur': 'kr', 'República Checa': 'cz',
+  Canadá: 'ca', 'Bosnia y Herzegovina': 'ba', Qatar: 'qa', Suiza: 'ch',
+  Brasil: 'br', Marruecos: 'ma', Haití: 'ht',
+  'Estados Unidos': 'us', Paraguay: 'py', Australia: 'au', Turquía: 'tr',
+  Alemania: 'de', Curazao: 'cw', 'Costa de Marfil': 'ci', Ecuador: 'ec',
+  'Países Bajos': 'nl', Holanda: 'nl', Japón: 'jp', Suecia: 'se', Túnez: 'tn',
+  Bélgica: 'be', Egipto: 'eg', Irán: 'ir', 'Nueva Zelanda': 'nz',
+  España: 'es', 'Cabo Verde': 'cv', 'Arabia Saudita': 'sa', Uruguay: 'uy',
+  Francia: 'fr', Senegal: 'sn', Irak: 'iq', Noruega: 'no',
+  Argentina: 'ar', Argelia: 'dz', Austria: 'at', Jordania: 'jo',
+  Portugal: 'pt', 'RD Congo': 'cd', Uzbekistán: 'uz', Colombia: 'co',
+  Croacia: 'hr', Ghana: 'gh', Panamá: 'pa',
+  // UK
+  Inglaterra: 'gb-eng', Escocia: 'gb-sct', Gales: 'gb-wls', 'Irlanda del Norte': 'gb-nir',
+  // Países sin 2026 pero con historia
+  Italia: 'it', Hungría: 'hu', Checoslovaquia: 'cz', Rumania: 'ro',
+  Chile: 'cl', Bolivia: 'bo', Perú: 'pe', Cuba: 'cu', Polonia: 'pl',
+  Yugoslavia: 'rs', 'Indias Orientales Holandesas': 'id',
+  'Alemania Occidental': 'de', 'Alemania Oriental': 'de',
+  'Unión Soviética': 'ru', Rusia: 'ru', Ucrania: 'ua',
+  Israel: 'il', 'El Salvador': 'sv', Camerún: 'cm', Honduras: 'hn',
+  Kuwait: 'kw', Dinamarca: 'dk', Irlanda: 'ie', 'Costa Rica': 'cr',
+  'Emiratos Árabes Unidos': 'ae', Nigeria: 'ng', Jamaica: 'jm',
+  Bulgaria: 'bg', Eslovaquia: 'sk', Eslovenia: 'si', Serbia: 'rs',
+  'Serbia y Montenegro': 'rs', Grecia: 'gr', Islandia: 'is',
+  Angola: 'ao', Togo: 'tg', 'Trinidad y Tobago': 'tt',
+  Catar: 'qa', Zaire: 'cd', Corea: 'kr', 'Corea del Norte': 'kp',
+  China: 'cn', 'Japón/Corea del Sur': 'jp',
+}
+
+function flagIcon(country: string): string {
+  return FLAG_ICON[normalizeTeam(country)] ?? FLAG_ICON[country] ?? 'un'
+}
+
+// ── Stats sidebar ─────────────────────────────────────────────
 const championsWins = (() => {
   const wins: Record<string, number> = {}
   for (const cup of cups) {
@@ -43,42 +83,7 @@ const allTimeRanking = (() => {
     .map(([team, points], i) => ({ rank: i + 1, team, points }))
 })()
 
-const FLAGS: Record<string, string> = {
-  Uruguay: '🇺🇾', Argentina: '🇦🇷', 'Estados Unidos': '🇺🇸', Yugoslavia: '🇾🇺',
-  Chile: '🇨🇱', Brasil: '🇧🇷', Francia: '🇫🇷', Rumania: '🇷🇴',
-  Paraguay: '🇵🇾', Perú: '🇵🇪', Bélgica: '🇧🇪', Bolivia: '🇧🇴',
-  México: '🇲🇽', Italia: '🇮🇹', Checoslovaquia: '🇨🇿', Alemania: '🇩🇪',
-  Austria: '🇦🇹', España: '🇪🇸', Hungría: '🇭🇺', Suiza: '🇨🇭',
-  Suecia: '🇸🇪', Holanda: '🇳🇱', Egipto: '🇪🇬', Cuba: '🇨🇺',
-  Polonia: '🇵🇱', Noruega: '🇳🇴', 'Indias Orientales Holandesas': '🇮🇩',
-  Inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧', Escocia: '🏴󠁧󠁢󠁳󠁣󠁴', Gales: '🏴󠁧󠁢󠁷󠁬󠁳',
-  'Alemania Occidental': '🇩🇪', 'Unión Soviética': '🇷🇺', 'Irlanda del Norte': '🇬🇧',
-  Portugal: '🇵🇹', 'Corea del Norte': '🇰🇵', Israel: '🇮🇱',
-  Marruecos: '🇲🇦', 'El Salvador': '🇸🇻', 'Alemania Oriental': '🇩🇪',
-  Irán: '🇮🇷', Túnez: '🇹🇳', Argelia: '🇩🇿', Camerún: '🇨🇲',
-  Honduras: '🇭🇳', 'Nueva Zelanda': '🇳🇿', Kuwait: '🇰🇼',
-  Dinamarca: '🇩🇰', 'Corea del Sur': '🇰🇷', Irak: '🇮🇶', Canadá: '🇨🇦',
-  Irlanda: '🇮🇪', 'Costa Rica': '🇨🇷', Colombia: '🇨🇴', 'Emiratos Árabes Unidos': '🇦🇪',
-  Croacia: '🇭🇷', Nigeria: '🇳🇬', Sudáfrica: '🇿🇦',
-  'Arabia Saudita': '🇸🇦', Jamaica: '🇯🇲', Bulgaria: '🇧🇬',
-  Turquía: '🇹🇷', Senegal: '🇸🇳', Japón: '🇯🇵', Ecuador: '🇪🇨',
-  Rusia: '🇷🇺', Ucrania: '🇺🇦', Ghana: '🇬🇭', Australia: '🇦🇺',
-  'República Checa': '🇨🇿', Angola: '🇦🇴', Togo: '🇹🇬',
-  'Trinidad y Tobago': '🇹🇹', 'Serbia y Montenegro': '🇷🇸',
-  Eslovaquia: '🇸🇰', 'Costa de Marfil': '🇨🇮', Eslovenia: '🇸🇮',
-  Serbia: '🇷🇸', Grecia: '🇬🇷', 'Bosnia y Herzegovina': '🇧🇦',
-  Islandia: '🇮🇸', Panamá: '🇵🇦', Catar: '🇶🇦', Zaire: '🇨🇩',
-  Haití: '🇭🇹', Corea: '🇰🇷', China: '🇨🇳',
-  'Japón/Corea del Sur': '🇯🇵',
-}
-
-function flag(country: string) {
-  return FLAGS[normalizeTeam(country)] ?? FLAGS[country] ?? '🏳️'
-}
-
-const TROPHIES = ['🥇', '🥈', '🥉']
-
-export function Historia() {
+export function Mundiales() {
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>
@@ -101,11 +106,10 @@ export function Historia() {
                   <span className={styles.year}>{cup.year}</span>
                   <div className={styles.cupInfo}>
                     <span className={styles.host}>
-                      {flag(cup.host)} {cup.host}
+                      <span className={`fi fi-${flagIcon(cup.host)} ${styles.hostFlag}`} />
+                      {cup.host}
                     </span>
-                    <span className={styles.teamsCount}>
-                      {cup.teams_count} equipos
-                    </span>
+                    <span className={styles.teamsCount}>{cup.teams_count} equipos</span>
                   </div>
                 </div>
 
@@ -113,37 +117,37 @@ export function Historia() {
                 <div className={styles.podium}>
                   <div className={`${styles.podiumItem} ${styles.gold}`}>
                     <span className={styles.podiumRank}>🥇</span>
-                    <span className={styles.podiumFlag}>{flag(cup.champion)}</span>
-                    <span className={styles.podiumName}>{cup.champion}</span>
+                    <span className={`fi fi-${flagIcon(cup.champion)} ${styles.podiumFlag}`} />
+                    <span className={styles.podiumName}>{normalizeTeam(cup.champion)}</span>
                     <span className={styles.podiumLabel}>Campeón</span>
                   </div>
                   <div className={`${styles.podiumItem} ${styles.silver}`}>
                     <span className={styles.podiumRank}>🥈</span>
-                    <span className={styles.podiumFlag}>{flag(cup.runner_up)}</span>
+                    <span className={`fi fi-${flagIcon(cup.runner_up)} ${styles.podiumFlag}`} />
                     <span className={styles.podiumName}>{cup.runner_up}</span>
                     <span className={styles.podiumLabel}>Subcampeón</span>
                   </div>
                   {third && (
                     <div className={`${styles.podiumItem} ${styles.bronze}`}>
                       <span className={styles.podiumRank}>🥉</span>
-                      <span className={styles.podiumFlag}>{flag(third.team)}</span>
+                      <span className={`fi fi-${flagIcon(third.team)} ${styles.podiumFlag}`} />
                       <span className={styles.podiumName}>{third.team}</span>
                       <span className={styles.podiumLabel}>Tercer lugar</span>
                     </div>
                   )}
                 </div>
 
-                {/* Lista de participantes */}
+                {/* Lista de participantes — sin los 3 primeros (ya están en podio) */}
                 <div className={styles.teamsSection}>
                   <p className={styles.teamsSectionTitle}>Equipos participantes</p>
                   <div className={styles.teamsList}>
                     {cup.teams
-                      .slice()
+                      .filter((t) => t.position > 3)
                       .sort((a, b) => a.position - b.position)
                       .map((t) => (
                         <div key={`${cup.year}-${t.team}`} className={styles.teamRow}>
                           <span className={styles.teamPos}>{t.position}</span>
-                          <span className={styles.teamFlag}>{flag(t.team)}</span>
+                          <span className={`fi fi-${flagIcon(t.team)} ${styles.teamFlag}`} />
                           <span className={styles.teamName}>{t.team}</span>
                         </div>
                       ))}
@@ -164,11 +168,9 @@ export function Historia() {
             <div className={styles.championsList}>
               {championsWins.map(({ team, count }) => (
                 <div key={team} className={styles.championRow}>
-                  <span className={styles.champFlag}>{flag(team)}</span>
+                  <span className={`fi fi-${flagIcon(team)} ${styles.champFlag}`} />
                   <span className={styles.champName}>{team}</span>
-                  <span className={styles.champTrophies}>
-                    {'🏆'.repeat(count)}
-                  </span>
+                  <span className={styles.champTrophies}>{'🏆'.repeat(count)}</span>
                   <span className={styles.champCount}>{count}</span>
                 </div>
               ))}
@@ -188,10 +190,7 @@ export function Historia() {
                   key={team}
                   className={`${styles.rankRow} ${rank <= 3 ? styles.rankTop : ''}`}
                 >
-                  <span className={styles.rankNum}>
-                    {rank <= 3 ? TROPHIES[rank - 1] : rank}
-                  </span>
-                  <span className={styles.rankFlag}>{flag(team)}</span>
+                  <span className={`fi fi-${flagIcon(team)} ${styles.rankFlag}`} />
                   <span className={styles.rankName}>{team}</span>
                   <span className={styles.rankPts}>{points}</span>
                 </div>

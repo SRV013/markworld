@@ -1,14 +1,19 @@
 import { usePronosticoStore } from '../../store/pronosticoStore'
 import { useBracketStore } from '../../store/bracketStore'
 import { GroupPicker } from '../../components/GroupPicker/GroupPicker'
+import { ThirdPlacePicker } from '../../components/ThirdPlacePicker/ThirdPlacePicker'
+import type { ThirdEntry } from '../../components/ThirdPlacePicker/ThirdPlacePicker'
 import { Bracket } from '../../components/Bracket/Bracket'
 import { GROUPS } from '../../data/worldCup2026'
 import { buildInitialBracket } from '../../utils/buildBracket'
 import styles from './Pronostico.module.css'
 
 export function Pronostico() {
-  const { phase, currentGroupIndex, picks, start, toggleTeam, next, prev, startBracket, reset } =
-    usePronosticoStore()
+  const {
+    phase, currentGroupIndex, picks, thirdPlaceRanking,
+    start, toggleTeam, next, prev,
+    toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset,
+  } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket } = useBracketStore()
 
   // ── Intro ────────────────────────────────────────────────────
@@ -20,12 +25,13 @@ export function Pronostico() {
           <h1 className={styles.introTitle}>Tu pronóstico</h1>
           <p className={styles.introText}>
             Elegí el orden de clasificación de los <strong>12 grupos</strong> del
-            Mundial 2026. Luego completá las <strong>fases eliminatorias</strong>{' '}
-            hasta elegir tu campeón.
+            Mundial 2026. Luego rankeá los mejores terceros y completá las{' '}
+            <strong>fases eliminatorias</strong> hasta elegir tu campeón.
           </p>
           <ul className={styles.rulesList}>
             <li>📋 12 grupos · 4 equipos cada uno</li>
             <li>🥇 Cliqueá los equipos en el orden que creés que clasifican</li>
+            <li>🔢 Elegís cuáles son los 8 mejores terceros de los 12 grupos</li>
             <li>⚔️ Luego completás el cuadro eliminatorio hasta la Final</li>
             <li>💾 Tu progreso se guarda automáticamente</li>
           </ul>
@@ -69,6 +75,64 @@ export function Pronostico() {
     )
   }
 
+  // ── Fase de clasificación de terceros ────────────────────────
+  if (phase === 'thirdPlace') {
+    // Armar la lista de 12 terceros (uno por grupo, en el orden A-L)
+    const thirds: ThirdEntry[] = GROUPS.flatMap((g) => {
+      const thirdName = picks[g.id]?.[2]
+      if (!thirdName) return []
+      const team = g.teams.find((t) => t.name === thirdName)
+      if (!team) return []
+      return [{ groupId: g.id, team }]
+    })
+
+    const top8 = thirdPlaceRanking.slice(0, 8)
+    const canGoToBracket = top8.length === 8
+
+    const handleStartBracket = () => {
+      initializeBracket(buildInitialBracket(picks, top8))
+      startBracket()
+    }
+
+    return (
+      <div className={styles.page}>
+        <div className={styles.thirdHeader}>
+          <h2 className={styles.thirdTitle}>Mejores Terceros</h2>
+          <p className={styles.thirdSubtitle}>
+            Hay <strong>12 terceros</strong> — los <strong>8 mejores</strong> clasifican a 16vos.
+            Cliqueá en orden del mejor al peor.
+          </p>
+        </div>
+
+        <div className={styles.pickerWrap}>
+          <ThirdPlacePicker
+            thirds={thirds}
+            ranking={thirdPlaceRanking}
+            onToggle={toggleThirdRank}
+          />
+        </div>
+
+        <div className={styles.nav}>
+          <button className={styles.navBtn} onClick={backToGroups}>
+            ← Volver a grupos
+          </button>
+
+          <button
+            className={styles.finishBtn}
+            onClick={handleStartBracket}
+            disabled={!canGoToBracket}
+          >
+            Ir al cuadro eliminatorio ⚔️
+          </button>
+        </div>
+
+        <button className={styles.resetBtn} onClick={reset}>
+          Reiniciar pronóstico
+        </button>
+      </div>
+    )
+  }
+
   // ── Fase de grupos (picking) ─────────────────────────────────
   const group = GROUPS[currentGroupIndex]
   const selected = picks[group.id] ?? []
@@ -77,11 +141,6 @@ export function Pronostico() {
   const canAdvance = selected.length === 3
   const allGroupsDone = GROUPS.every((g) => (picks[g.id] ?? []).length === 3)
   const completedCount = GROUPS.filter((g) => (picks[g.id] ?? []).length === 3).length
-
-  const handleStartBracket = () => {
-    initializeBracket(buildInitialBracket(picks))
-    startBracket()
-  }
 
   return (
     <div className={styles.page}>
@@ -123,8 +182,8 @@ export function Pronostico() {
 
         {isLast ? (
           canAdvance && allGroupsDone ? (
-            <button className={styles.finishBtn} onClick={handleStartBracket}>
-              Ir al cuadro eliminatorio ⚔️
+            <button className={styles.finishBtn} onClick={startThirdPhase}>
+              Rankear terceros →
             </button>
           ) : (
             <button className={styles.navBtnPrimary} disabled>

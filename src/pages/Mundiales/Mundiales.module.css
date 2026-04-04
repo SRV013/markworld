@@ -79,9 +79,20 @@
 }
 
 .host {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--font-size-lg);
   font-weight: 600;
   opacity: 0.95;
+}
+
+.hostFlag {
+  width: 1.6rem;
+  height: 1.2rem;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .teamsCount {
@@ -117,8 +128,11 @@
 }
 
 .podiumFlag {
-  font-size: 2rem;
-  line-height: 1;
+  width: 2.2rem;
+  height: 1.65rem;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .podiumName {
@@ -143,7 +157,10 @@
   color: #92400e;
 }
 
-[data-theme='dark'] .gold .podiumName,
+[data-theme='dark'] .gold .podiumName {
+  color: #fcd34d;
+}
+
 @media (prefers-color-scheme: dark) {
   .gold .podiumName {
     color: #fcd34d;
@@ -206,8 +223,11 @@
 }
 
 .teamFlag {
-  font-size: 1.1rem;
-  text-align: center;
+  width: 1.4rem;
+  height: 1.05rem;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .teamName {
@@ -219,8 +239,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  position: sticky;
-  top: var(--space-4);
 }
 
 .sideSection {
@@ -264,8 +282,11 @@
 }
 
 .champFlag {
-  font-size: 1.1rem;
-  text-align: center;
+  width: 1.4rem;
+  height: 1.05rem;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .champName {
@@ -302,19 +323,21 @@
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
-  max-height: 480px;
-  overflow-y: auto;
 }
 
 .rankRow {
   display: grid;
-  grid-template-columns: 2rem 1.5rem 1fr 2.8rem;
+  grid-template-columns: 1.5rem 1fr 2.8rem;
   align-items: center;
   gap: var(--space-2);
-  padding: 5px var(--space-4);
-  border-bottom: 1px solid transparent;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
   font-size: var(--font-size-sm);
   transition: background-color var(--transition-fast);
+}
+
+.rankRow:last-child {
+  border-bottom: none;
 }
 
 .rankRow:hover {
@@ -334,13 +357,17 @@
 }
 
 .rankFlag {
-  font-size: 1rem;
-  text-align: center;
+  width: 1.4rem;
+  height: 1.05rem;
+  border-radius: 2px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .rankName {
   color: var(--color-text);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -348,10 +375,10 @@
 
 .rankPts {
   text-align: right;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-primary-600);
   font-variant-numeric: tabular-nums;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 @media (width > 500px) {

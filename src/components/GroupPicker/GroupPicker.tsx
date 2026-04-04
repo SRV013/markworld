@@ -37,7 +37,7 @@ export function GroupPicker({ group, selected, onToggle }: GroupPickerProps) {
                 onClick={() => onToggle(team.name)}
                 aria-pressed={isPicked}
               >
-                <span className={`fi fi-${team.code.toLowerCase()} ${styles.flag}`} />
+                <span className={`fi fi-${team.flagIcon} ${styles.flag}`} />
                 <span className={styles.name}>{team.name}</span>
 
                 {isPicked && (

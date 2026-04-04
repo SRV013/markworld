@@ -4,10 +4,10 @@ import { useTheme } from '../../hooks/useTheme'
 import styles from './Header.module.css'
 
 const NAV_LINKS = [
-  { to: '/',        label: 'Home'     },
-  { to: '/fixture', label: 'Fixture 2026'  },
-  { to: '/mundiales',label: 'Mundiales' },
-  { to: '/campeones',label: 'Campeones' }
+  { to: '/',          label: 'Home'        },
+  { to: '/mundiales', label: 'Mundiales'   },
+  { to: '/campeones', label: 'Campeones'   },
+  { to: '/fixture',   label: 'Fixture 2026'},
 ]
 
 export function Header() {

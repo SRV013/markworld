@@ -5,13 +5,18 @@ import { persist } from 'zustand/middleware'
 type Picks = Record<string, string[]>
 
 interface PronosticoState {
-  phase: 'intro' | 'picking' | 'bracket'
+  phase: 'intro' | 'picking' | 'thirdPlace' | 'bracket'
   currentGroupIndex: number
   picks: Picks
+  thirdPlaceRanking: string[]   // nombres ordenados de mejor a peor 3°
+
   start: () => void
   toggleTeam: (groupId: string, teamName: string) => void
   next: (totalGroups: number) => void
   prev: () => void
+  toggleThirdRank: (teamName: string) => void
+  startThirdPhase: () => void
+  backToGroups: () => void
   startBracket: () => void
   reset: () => void
 }
@@ -22,6 +27,7 @@ export const usePronosticoStore = create<PronosticoState>()(
       phase: 'intro',
       currentGroupIndex: 0,
       picks: {},
+      thirdPlaceRanking: [],
 
       start: () => set({ phase: 'picking', currentGroupIndex: 0 }),
 
@@ -31,11 +37,10 @@ export const usePronosticoStore = create<PronosticoState>()(
           const idx = current.indexOf(teamName)
 
           if (idx !== -1) {
-            // ya estaba → lo saca y reorganiza
             return { picks: { ...state.picks, [groupId]: current.filter((_, i) => i !== idx) } }
           }
 
-          if (current.length >= 3) return state // ya hay 3, no hace nada
+          if (current.length >= 3) return state
 
           return { picks: { ...state.picks, [groupId]: [...current, teamName] } }
         }),
@@ -50,9 +55,23 @@ export const usePronosticoStore = create<PronosticoState>()(
           currentGroupIndex: Math.max(state.currentGroupIndex - 1, 0),
         })),
 
+      toggleThirdRank: (teamName) =>
+        set((state) => {
+          const idx = state.thirdPlaceRanking.indexOf(teamName)
+          if (idx !== -1) {
+            // ya estaba → lo saca y los siguientes suben un puesto
+            return { thirdPlaceRanking: state.thirdPlaceRanking.filter((_, i) => i !== idx) }
+          }
+          return { thirdPlaceRanking: [...state.thirdPlaceRanking, teamName] }
+        }),
+
+      startThirdPhase: () => set({ phase: 'thirdPlace', thirdPlaceRanking: [] }),
+
+      backToGroups: () => set({ phase: 'picking', currentGroupIndex: 11 }),
+
       startBracket: () => set({ phase: 'bracket' }),
 
-      reset: () => set({ phase: 'intro', currentGroupIndex: 0, picks: {} }),
+      reset: () => set({ phase: 'intro', currentGroupIndex: 0, picks: {}, thirdPlaceRanking: [] }),
     }),
     { name: 'pronostico-wc2026' }
   )
