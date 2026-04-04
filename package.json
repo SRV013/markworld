@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.7.2",
     "flag-icons": "^7.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.14.0",
     "zustand": "^4.5.4"
   },
@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "typescript": "^5.4.5",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vite-plugin-pwa": "^1.2.0"
   }
 }
