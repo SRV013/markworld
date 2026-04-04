@@ -216,7 +216,7 @@
 }
 
 .teamPos {
-  text-align: right;
+  /* text-align: right; */
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
