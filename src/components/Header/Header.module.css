@@ -8,7 +8,9 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: background-color var(--transition-base), border-color var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
 }
 
 /* ---- LOGO ---- */
@@ -18,7 +20,7 @@
   align-items: baseline;
   gap: 1px;
   font-size: var(--font-size-xl);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
 }
 
@@ -71,7 +73,9 @@
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .iconBtn:hover {
@@ -132,7 +136,7 @@
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   z-index: 400;
   overflow: hidden;
 }
@@ -163,7 +167,9 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .submenuItem:hover {
@@ -199,7 +205,9 @@
   font-weight: 500;
   cursor: pointer;
   width: 100%;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .googleBtn:hover {
@@ -291,7 +299,9 @@
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .drawerClose:hover {
@@ -312,7 +322,9 @@
   font-weight: 500;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .drawerLink:hover {
@@ -325,7 +337,7 @@
   color: var(--color-primary-600);
 }
 
-[data-theme='dark'] .drawerLinkActive {
+[data-theme="dark"] .drawerLinkActive {
   background-color: var(--color-primary-900);
   color: var(--color-primary-300);
 }
