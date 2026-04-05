@@ -200,6 +200,225 @@
   opacity: 0.9;
 }
 
+/* ---- CHAMPION BADGE (clickeable) ---- */
+.championBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.08));
+  border: 1px solid rgba(251,191,36,0.5);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: #b45309;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.championBadge:hover {
+  opacity: 0.85;
+}
+
+[data-theme='dark'] .championBadge {
+  color: #fbbf24;
+  border-color: rgba(251,191,36,0.3);
+}
+
+/* ---- MODAL GUARDAR FIXTURE ---- */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.saveModal {
+  position: relative;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  max-width: 340px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+}
+
+.modalClose {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: var(--space-1);
+}
+
+.modalClose:hover {
+  color: var(--color-text);
+}
+
+.saveModalTrophy {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.saveModalTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.saveModalChampion {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: #b45309;
+  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05));
+  border: 1px solid rgba(251,191,36,0.4);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-5);
+}
+
+[data-theme='dark'] .saveModalChampion {
+  color: #fbbf24;
+}
+
+.saveModalFlag {
+  width: 26px;
+  height: 18px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.saveModalHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---- GOOGLE LOGIN ---- */
+.googleBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  justify-content: center;
+}
+
+.googleBtn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+[data-theme='dark'] .googleBtn {
+  background: #2d2d2d;
+  color: #e8eaed;
+  border-color: #5f6368;
+}
+
+[data-theme='dark'] .googleBtn:hover {
+  background: #3c3c3c;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ---- USER INFO ---- */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.userAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.userName {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOutBtn {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  flex-shrink: 0;
+}
+
+.signOutBtn:hover {
+  color: var(--color-text);
+}
+
+/* ---- GUARDAR FIXTURE ---- */
+.saveBtn {
+  width: 100%;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-primary-600);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.saveBtn:hover:not(:disabled) {
+  background-color: var(--color-primary-700);
+}
+
+.saveBtnDone {
+  background-color: #16a34a;
+  cursor: default;
+}
+
 /* ---- RESET ---- */
 .resetBtn {
   background: transparent;
@@ -263,24 +482,6 @@
   color: var(--color-text-muted);
 }
 
-.championBadge {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.08));
-  border: 1px solid rgba(251,191,36,0.5);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  color: #b45309;
-  white-space: nowrap;
-}
-
-[data-theme='dark'] .championBadge {
-  color: #fbbf24;
-  border-color: rgba(251,191,36,0.3);
-}
 
 @media (width > 500px) {
   .page {

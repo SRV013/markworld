@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ROUNDS, ROUND_LABELS, ROUND_MATCH_COUNT } from '@/types/bracket'
 import type { BracketMatch, Round } from '@/types/bracket'
 import { useBracketStore } from '@/store/bracketStore'
@@ -14,6 +14,9 @@ const CW  = 32    // ancho del conector SVG (px)
 const COL = MW + CW   // stride entre columnas (px)
 const TOTAL_H = 16 * UNIT + 24  // altura total del bracket
 
+// Cuánto acercar las SF en mobile (px): se aplica tanto a cards como a SVG
+const SF_MOBILE_OFFSET = 0
+
 // ─────────── Helpers de posición ────────────
 function getTop(roundIdx: number, matchIdx: number): number {
   const slotH = UNIT * Math.pow(2, roundIdx)
@@ -22,6 +25,13 @@ function getTop(roundIdx: number, matchIdx: number): number {
 
 function centerY(roundIdx: number, matchIdx: number): number {
   return getTop(roundIdx, matchIdx) + MH / 2
+}
+
+// centerY con offset de SF aplicado
+function adjCenterY(roundIdx: number, matchIdx: number, sfOffset: number): number {
+  let y = centerY(roundIdx, matchIdx)
+  if (roundIdx === 3) y += matchIdx === 0 ? -sfOffset : sfOffset
+  return y
 }
 
 // ─────────── flagIcon lookup (name → flagIcon) ──
@@ -66,11 +76,14 @@ interface MatchCardProps {
   match: BracketMatch
   roundIdx: number
   matchIdx: number
+  sfOffset: number
+  locked: boolean
   onPick: (id: string, team: string) => void
 }
 
-function MatchCard({ match, roundIdx, matchIdx, onPick }: MatchCardProps) {
-  const top  = getTop(roundIdx, matchIdx)
+function MatchCard({ match, roundIdx, matchIdx, sfOffset, locked, onPick }: MatchCardProps) {
+  let top  = getTop(roundIdx, matchIdx)
+  if (roundIdx === 3) top += matchIdx === 0 ? -sfOffset : sfOffset
   const left = roundIdx * COL
   const isPlayable = !!match.teamA && !!match.teamB
   const isFinal = match.round === 'F'
@@ -87,7 +100,7 @@ function MatchCard({ match, roundIdx, matchIdx, onPick }: MatchCardProps) {
         team={match.teamA}
         isWinner={match.winner === match.teamA && !!match.teamA}
         isFinal={isFinal}
-        disabled={!isPlayable}
+        disabled={!isPlayable || locked}
         onClick={() => match.teamA && onPick(match.id, match.teamA)}
       />
       <div className={styles.divider} />
@@ -95,7 +108,7 @@ function MatchCard({ match, roundIdx, matchIdx, onPick }: MatchCardProps) {
         team={match.teamB}
         isWinner={match.winner === match.teamB && !!match.teamB}
         isFinal={isFinal}
-        disabled={!isPlayable}
+        disabled={!isPlayable || locked}
         onClick={() => match.teamB && onPick(match.id, match.teamB)}
       />
     </div>
@@ -107,24 +120,29 @@ interface ConnectorProps {
   fromRoundIdx: number
   fromCount: number
   left: number
+  sfOffset: number
 }
 
-function ConnectorSVG({ fromRoundIdx, fromCount, left }: ConnectorProps) {
+function ConnectorSVG({ fromRoundIdx, fromCount, left, sfOffset }: ConnectorProps) {
   const half = CW / 2
 
   const lines: React.ReactNode[] = []
   for (let i = 0; i < fromCount; i += 2) {
-    const y1  = centerY(fromRoundIdx, i)
-    const y2  = centerY(fromRoundIdx, i + 1)
-    const k   = i / 2
-    const yNext = centerY(fromRoundIdx + 1, k)
+    const y1    = adjCenterY(fromRoundIdx,     i,     sfOffset)
+    const y2    = adjCenterY(fromRoundIdx,     i + 1, sfOffset)
+    const k     = i / 2
+    const yNext = adjCenterY(fromRoundIdx + 1, k,     sfOffset)
+
+    // La vertical debe llegar hasta yNext aunque quede fuera del rango [y1,y2]
+    const vTop = Math.min(y1, yNext)
+    const vBot = Math.max(y2, yNext)
 
     lines.push(
       <g key={i} stroke="var(--color-border)" strokeWidth="1.5" fill="none">
         {/* línea horizontal desde partido superior */}
         <line x1={0} y1={y1} x2={half} y2={y1} />
-        {/* vertical que une los dos partidos */}
-        <line x1={half} y1={y1} x2={half} y2={y2} />
+        {/* vertical que une los dos partidos y el punto de salida */}
+        <line x1={half} y1={vTop} x2={half} y2={vBot} />
         {/* línea horizontal desde partido inferior */}
         <line x1={0} y1={y2} x2={half} y2={y2} />
         {/* horizontal de salida al siguiente round */}
@@ -146,9 +164,20 @@ function ConnectorSVG({ fromRoundIdx, fromCount, left }: ConnectorProps) {
 }
 
 // ─────────── Bracket principal ──────────────
-export function Bracket() {
+export function Bracket({ locked = false }: { locked?: boolean }) {
   const { matches, pickWinner } = useBracketStore()
   const outerRef = useRef<HTMLDivElement>(null)
+
+  // Detecta mobile para aplicar el offset de SF
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const sfOffset = isMobile ? SF_MOBILE_OFFSET : 0
 
   const byRound = ROUNDS.reduce<Record<Round, BracketMatch[]>>(
     (acc, r) => { acc[r] = matches.filter((m) => m.round === r); return acc },
@@ -161,11 +190,29 @@ export function Bracket() {
   )
   const scrollTarget = (activeRoundIdx === -1 ? ROUNDS.length - 1 : activeRoundIdx) * COL
 
-  // Scroll automático al round activo: avanza al completar una ronda,
-  // retrocede si se deselecciona un ganador
+  // Ambas semis completadas → centrar la Final
+  const sfDone = byRound['SF'].length === 2 && byRound['SF'].every((m) => m.winner !== null)
+
+  // Scroll horizontal: centra la Final si sfDone, si no sigue el round activo
   useEffect(() => {
-    outerRef.current?.scrollTo({ left: scrollTarget, behavior: 'smooth' })
-  }, [scrollTarget])
+    if (!outerRef.current) return
+    if (sfDone) {
+      const centerX = 4 * COL + MW / 2
+      const left = Math.max(0, centerX - outerRef.current.clientWidth / 2)
+      outerRef.current.scrollTo({ left, behavior: 'smooth' })
+    } else {
+      outerRef.current.scrollTo({ left: scrollTarget, behavior: 'smooth' })
+    }
+  }, [scrollTarget, sfDone])
+
+  // Scroll vertical: centra la Final en pantalla cuando sfDone
+  useEffect(() => {
+    if (!sfDone || !outerRef.current) return
+    const finalCenterY = getTop(4, 0) + MH / 2
+    const outerTop = outerRef.current.getBoundingClientRect().top + window.scrollY
+    const scrollTop = Math.max(0, outerTop + finalCenterY - window.innerHeight / 2)
+    window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+  }, [sfDone])
 
   const totalWidth = ROUNDS.length * MW + (ROUNDS.length - 1) * CW
 
@@ -197,6 +244,8 @@ export function Bracket() {
               match={match}
               roundIdx={ri}
               matchIdx={mi}
+              sfOffset={sfOffset}
+              locked={locked}
               onPick={pickWinner}
             />
           ))
@@ -209,6 +258,7 @@ export function Bracket() {
             fromRoundIdx={ri}
             fromCount={ROUND_MATCH_COUNT[ROUNDS[ri]]}
             left={ri * COL + MW}
+            sfOffset={sfOffset}
           />
         ))}
       </div>

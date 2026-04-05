@@ -2,9 +2,13 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Groups } from '@/components/Groups/Groups'
 import { GROUPS } from '@/data/worldCup2026'
+import { useAuthStore } from '@/store/authStore'
 import styles from './Fixture.module.css'
 
 export function Fixture() {
+  const { user, savedFixture } = useAuthStore()
+  const hasSaved = !!user && !!savedFixture
+
   return (
     <div className={styles.page}>
       <Helmet>
@@ -21,7 +25,7 @@ export function Fixture() {
           </p>
         </div>
         <Link to="/pronostico" className={styles.playBtn}>
-          🏆 Jugar
+          🏆 {hasSaved ? 'Mi pronóstico' : 'Jugar'}
         </Link>
       </div>
 

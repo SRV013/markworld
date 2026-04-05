@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useAuthStore } from '@/store/authStore'
 import styles from './Home.module.css'
 
 const SECTIONS = [
@@ -30,6 +31,9 @@ const SECTIONS = [
 ]
 
 export function Home() {
+  const { user, savedFixture } = useAuthStore()
+  const hasSaved = !!user && !!savedFixture
+
   return (
     <div className={styles.page}>
       <Helmet>
@@ -51,7 +55,7 @@ export function Home() {
           Toda la Copa del Mundo en un solo lugar.
         </p>
         <NavLink to="/pronostico" className={styles.heroCta}>
-          Hacer mi pronóstico →
+          {hasSaved ? 'Ver mi pronóstico →' : 'Hacer mi pronóstico →'}
         </NavLink>
       </section>
 

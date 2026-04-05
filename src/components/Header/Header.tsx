@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useTheme } from '@/hooks/useTheme'
+import { useAuthStore } from '@/store/authStore'
 import styles from './Header.module.css'
 
 const NAV_LINKS = [
@@ -12,7 +13,22 @@ const NAV_LINKS = [
 
 export function Header() {
   const { theme, toggleTheme } = useTheme()
+  const { user, signOut } = useAuthStore()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [submenuOpen, setSubmenuOpen] = useState(false)
+  const submenuRef = useRef<HTMLDivElement>(null)
+
+  // Cerrar submenu al clickear fuera
+  useEffect(() => {
+    if (!submenuOpen) return
+    const handler = (e: MouseEvent) => {
+      if (!submenuRef.current?.contains(e.target as Node)) {
+        setSubmenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [submenuOpen])
 
   const closeMenu = () => setMenuOpen(false)
 
@@ -74,12 +90,47 @@ export function Header() {
             )}
           </button>
 
-          <button className={styles.iconBtn} aria-label="Perfil de usuario">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </button>
+          {user ? (
+            <div className={styles.avatarWrap} ref={submenuRef}>
+              <button
+                className={styles.avatarBtn}
+                onClick={() => setSubmenuOpen((v) => !v)}
+                title={user.displayName ?? ''}
+              >
+                {user.photoURL
+                  ? <img src={user.photoURL} className={styles.avatar} alt={user.displayName ?? ''} referrerPolicy="no-referrer" />
+                  : <span className={styles.avatarInitial}>{(user.displayName ?? '?')[0]}</span>
+                }
+              </button>
+              {submenuOpen && (
+                <div className={styles.submenu}>
+                  <div className={styles.submenuUser}>
+                    <span className={styles.submenuName}>{user.displayName}</span>
+                  </div>
+                  <NavLink
+                    to="/pronostico"
+                    className={styles.submenuItem}
+                    onClick={() => setSubmenuOpen(false)}
+                  >
+                    🏆 Ver mi pronóstico
+                  </NavLink>
+                  <button
+                    className={styles.submenuItem}
+                    onClick={() => { signOut(); setSubmenuOpen(false) }}
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button className={styles.iconBtn} aria-label="Perfil de usuario">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </button>
+          )}
         </div>
       </header>
 

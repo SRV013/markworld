@@ -18,6 +18,7 @@ interface PronosticoState {
   startThirdPhase: () => void
   backToGroups: () => void
   startBracket: () => void
+  loadSaved: (picks: Picks, thirdPlaceRanking: string[]) => void
   reset: () => void
 }
 
@@ -70,6 +71,9 @@ export const usePronosticoStore = create<PronosticoState>()(
       backToGroups: () => set({ phase: 'picking', currentGroupIndex: 11 }),
 
       startBracket: () => set({ phase: 'bracket' }),
+
+      loadSaved: (picks: Picks, thirdPlaceRanking: string[]) =>
+        set({ phase: 'bracket', picks, thirdPlaceRanking }),
 
       reset: () => set({ phase: 'intro', currentGroupIndex: 0, picks: {}, thirdPlaceRanking: [] }),
     }),

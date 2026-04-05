@@ -10,7 +10,9 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .card:hover {
@@ -119,21 +121,9 @@
     padding: var(--space-2) var(--space-3);
   }
 
-  .groupId {
-    font-size: var(--font-size-xl);
-  }
-
-  .teamRow {
-    gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-  }
-
-  .flag {
-    width: 18px;
-    height: 13px;
-  }
-
   .teamName {
-    font-size: var(--font-size-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

@@ -1,6 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { usePronosticoStore } from '@/store/pronosticoStore'
 import { useBracketStore } from '@/store/bracketStore'
+import { useAuthStore } from '@/store/authStore'
+import { db } from '@/lib/firebase'
 import { GroupPicker } from '@/components/GroupPicker/GroupPicker'
 import { ThirdPlacePicker } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import type { ThirdEntry } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
@@ -9,14 +12,42 @@ import { GROUPS } from '@/data/worldCup2026'
 import { buildInitialBracket } from '@/utils/buildBracket'
 import styles from './Pronostico.module.css'
 
+// Lookup bandera por nombre de equipo
+const flagIconMap = new Map<string, string>()
+GROUPS.forEach((g) => g.teams.forEach((t) => flagIconMap.set(t.name, t.flagIcon)))
+
 export function Pronostico() {
   const {
     phase, currentGroupIndex, picks, thirdPlaceRanking,
     start, toggleTeam, next, prev,
-    toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset,
+    toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset, loadSaved,
   } = usePronosticoStore()
-  const { initializeBracket, reset: resetBracket } = useBracketStore()
+  const { initializeBracket, reset: resetBracket, matches } = useBracketStore()
+  const { user, loading: authLoading, savedFixture, fixtureLoading, fixtureLoaded, signInWithGoogle, signOut, refreshFixture, markFixtureLoaded } = useAuthStore()
   const pickerRef = useRef<HTMLDivElement>(null)
+  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [showSaveModal, setShowSaveModal] = useState(false)
+
+  // Cargar fixture desde Firestore al loguear (solo una vez por sesión)
+  useEffect(() => {
+    if (!user || !savedFixture || fixtureLoaded) return
+    markFixtureLoaded()
+    initializeBracket(savedFixture.matches)
+    loadSaved(savedFixture.picks, savedFixture.thirdPlaceRanking)
+  }, [user, savedFixture, fixtureLoaded])
+
+  // Detectar cuándo se elige el campeón para abrir el modal
+  const champion = matches.find((m) => m.round === 'F')?.winner ?? null
+  const prevChampionRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (champion && champion !== prevChampionRef.current) {
+      if (user) refreshFixture(user.uid)
+      setShowSaveModal(true)
+      setSaved(false)
+    }
+    prevChampionRef.current = champion
+  }, [champion])
 
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
@@ -37,8 +68,8 @@ export function Pronostico() {
             <li>⚔️ Luego completás el cuadro eliminatorio hasta la Final</li>
             <li>💾 Tu progreso se guarda automáticamente</li>
           </ul>
-          <button className={styles.startBtn} onClick={start}>
-            Comenzar pronóstico →
+          <button className={styles.startBtn} onClick={savedFixture ? startBracket : start}>
+            {savedFixture ? 'Ver mi pronóstico →' : 'Comenzar pronóstico →'}
           </button>
         </div>
       </div>
@@ -47,11 +78,45 @@ export function Pronostico() {
 
   // ── Fase eliminatoria (bracket) ──────────────────────────────
   if (phase === 'bracket') {
-    const champion = useBracketStore.getState().matches.find((m) => m.round === 'F')?.winner
-
     const handleReset = () => {
       reset()
       resetBracket()
+    }
+
+    const handleSave = async () => {
+      if (!user || !champion) return
+      setSaving(true)
+      try {
+        await setDoc(doc(db, 'pronosticos', user.uid), {
+          uid: user.uid,
+          displayName: user.displayName ?? null,
+          photoURL: user.photoURL ?? null,
+          champion,
+          picks,
+          thirdPlaceRanking,
+          matches: matches.map((m) => ({
+            id: m.id,
+            round: m.round,
+            seedLabel: m.seedLabel ?? '',
+            teamA: m.teamA ?? null,
+            teamB: m.teamB ?? null,
+            winner: m.winner ?? null,
+            nextMatchId: m.nextMatchId ?? null,
+            nextSlot: m.nextSlot ?? null,
+          })),
+          savedAt: serverTimestamp(),
+        })
+        await refreshFixture(user.uid)
+        setSaved(true)
+        setTimeout(() => {
+          setSaved(false)
+          setShowSaveModal(false)
+        }, 2000)
+      } catch (e) {
+        console.error('Error guardando fixture:', e)
+      } finally {
+        setSaving(false)
+      }
     }
 
     return (
@@ -62,24 +127,83 @@ export function Pronostico() {
             <p className={styles.subtitle}>Copa del Mundo 2026 · Seleccioná el ganador de cada partido</p>
           </div>
           {champion && (
-            <div className={styles.championBadge}>
+            <button
+              className={styles.championBadge}
+              onClick={() => {
+                if (user) refreshFixture(user.uid)
+                setShowSaveModal(true)
+              }}
+              title="Ver fixture guardado"
+            >
               🏆 {champion}
-            </div>
+            </button>
           )}
         </div>
 
-        <Bracket />
+        <Bracket locked={!!savedFixture} />
 
         <button className={styles.resetBtn} onClick={handleReset}>
           Reiniciar pronóstico completo
         </button>
+
+        {/* Modal guardar fixture */}
+        {showSaveModal && champion && (
+          <div className={styles.modalBackdrop} onClick={() => setShowSaveModal(false)}>
+            <div className={styles.saveModal} onClick={(e) => e.stopPropagation()}>
+              <button className={styles.modalClose} onClick={() => setShowSaveModal(false)}>✕</button>
+              <div className={styles.saveModalTrophy}>🏆</div>
+              <h2 className={styles.saveModalTitle}>¡Pronóstico completo!</h2>
+              <div className={styles.saveModalChampion}>
+                <span className={`fi fi-${flagIconMap.get(champion) ?? 'un'} ${styles.saveModalFlag}`} />
+                {champion}
+              </div>
+
+              {authLoading || fixtureLoading ? (
+                <p className={styles.saveModalHint}>Cargando…</p>
+              ) : savedFixture ? (
+                <p className={styles.saveModalHint}>✓ Fixture guardado en la nube</p>
+              ) : !user ? (
+                <>
+                  <p className={styles.saveModalHint}>
+                    Iniciá sesión para guardar tu pronóstico en la nube
+                  </p>
+                  <button className={styles.googleBtn} onClick={signInWithGoogle}>
+                    <svg className={styles.googleIcon} viewBox="0 0 48 48">
+                      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Iniciar sesión con Google
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className={styles.userInfo}>
+                    {user.photoURL && (
+                      <img src={user.photoURL} className={styles.userAvatar} alt={user.displayName ?? ''} referrerPolicy="no-referrer" />
+                    )}
+                    <span className={styles.userName}>{user.displayName}</span>
+                    <button className={styles.signOutBtn} onClick={signOut}>Salir</button>
+                  </div>
+                  <button
+                    className={`${styles.saveBtn} ${saved ? styles.saveBtnDone : ''}`}
+                    onClick={handleSave}
+                    disabled={saving || saved}
+                  >
+                    {saved ? '✓ Guardado en la nube' : saving ? 'Guardando…' : '💾 Guardar fixture'}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     )
   }
 
   // ── Fase de clasificación de terceros ────────────────────────
   if (phase === 'thirdPlace') {
-    // Armar la lista de 12 terceros (uno por grupo, en el orden A-L)
     const thirds: ThirdEntry[] = GROUPS.flatMap((g) => {
       const thirdName = picks[g.id]?.[2]
       if (!thirdName) return []
