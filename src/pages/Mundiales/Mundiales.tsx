@@ -1,6 +1,19 @@
 import { Helmet } from 'react-helmet-async'
 import { historyCup } from '@/data/historyCup'
+import mascot2006 from '@/assets/mascotas/2006.png'
+import mascot2010 from '@/assets/mascotas/2010.png'
+import mascot2014 from '@/assets/mascotas/2014.png'
+import mascot2018 from '@/assets/mascotas/2018.png'
+import mascot2022 from '@/assets/mascotas/2022.png'
 import styles from './Mundiales.module.css'
+
+const MASCOTS: Record<number, string> = {
+  2006: mascot2006,
+  2010: mascot2010,
+  2014: mascot2014,
+  2018: mascot2018,
+  2022: mascot2022,
+}
 
 type TeamResult = { team: string; position: number; points: number }
 type WorldCup = {
@@ -118,6 +131,15 @@ export function Mundiales() {
                     </span>
                     <span className={styles.teamsCount}>{cup.teams_count} equipos</span>
                   </div>
+                  {MASCOTS[cup.year] && (
+                    <img
+                      src={MASCOTS[cup.year]}
+                      alt={`Mascota ${cup.year}`}
+                      className={styles.mascot}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                 </div>
 
                 {/* Podio */}

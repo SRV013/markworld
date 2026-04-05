@@ -48,6 +48,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  position: relative;
 }
 
 /* Header: año + sede */
@@ -98,6 +99,18 @@
 .teamsCount {
   font-size: var(--font-size-sm);
   opacity: 0.7;
+}
+
+.mascot {
+  position: absolute;
+  top: 280px;
+  right: 30px;
+  height: 140px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* ── Podio ── */
