@@ -15,24 +15,34 @@ export function VerFixture() {
   const { uid } = useParams<{ uid: string }>()
   const [fixture, setFixture] = useState<SavedFixture | null>(null)
   const [loading, setLoading]   = useState(true)
-  const [notFound, setNotFound] = useState(false)
+  const [error, setError]       = useState<string | null>(null)
 
   useEffect(() => {
     if (!uid) return
     getDoc(doc(db, 'pronosticos', uid))
       .then((snap) => {
         if (snap.exists()) setFixture(snap.data() as SavedFixture)
-        else setNotFound(true)
+        else setError('no-encontrado')
       })
-      .catch(() => setNotFound(true))
+      .catch((e) => {
+        console.error('VerFixture error:', e)
+        setError(e?.code === 'permission-denied' ? 'sin-permiso' : 'no-encontrado')
+      })
       .finally(() => setLoading(false))
   }, [uid])
 
-  if (loading) {
-    return <div className={styles.center}>Cargando pronóstico…</div>
+  if (loading) return <div className={styles.center}>Cargando pronóstico…</div>
+
+  if (error === 'sin-permiso') {
+    return (
+      <div className={styles.center}>
+        Sin permisos para leer este fixture.<br />
+        Actualizá las reglas de Firestore.
+      </div>
+    )
   }
 
-  if (notFound || !fixture) {
+  if (error || !fixture) {
     return <div className={styles.center}>Fixture no encontrado</div>
   }
 
