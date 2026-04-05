@@ -164,8 +164,9 @@ function ConnectorSVG({ fromRoundIdx, fromCount, left, sfOffset }: ConnectorProp
 }
 
 // ─────────── Bracket principal ──────────────
-export function Bracket({ locked = false }: { locked?: boolean }) {
-  const { matches, pickWinner } = useBracketStore()
+export function Bracket({ locked = false, matches: propMatches }: { locked?: boolean, matches?: BracketMatch[] }) {
+  const { matches: storeMatches, pickWinner } = useBracketStore()
+  const matches = propMatches ?? storeMatches
   const outerRef = useRef<HTMLDivElement>(null)
 
   // Detecta mobile para aplicar el offset de SF

@@ -10,7 +10,8 @@ const Home       = lazy(() => import('@/pages/Home/Home').then(m => ({ default: 
 const Mundiales  = lazy(() => import('@/pages/Mundiales/Mundiales').then(m => ({ default: m.Mundiales })))
 const Campeones  = lazy(() => import('@/pages/Campeones/Campeones').then(m => ({ default: m.Campeones })))
 const Fixture    = lazy(() => import('@/pages/Fixture/Fixture').then(m => ({ default: m.Fixture })))
-const Pronostico = lazy(() => import('@/pages/Pronostico/Pronostico').then(m => ({ default: m.Pronostico })))
+const Pronostico  = lazy(() => import('@/pages/Pronostico/Pronostico').then(m => ({ default: m.Pronostico })))
+const VerFixture  = lazy(() => import('@/pages/VerFixture/VerFixture').then(m => ({ default: m.VerFixture })))
 
 function App() {
   const { theme } = useTheme()
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/pronostico" element={<Pronostico />} />
                 <Route path="/mundiales"  element={<Mundiales />} />
                 <Route path="/campeones"  element={<Campeones />} />
+                <Route path="/ver/:uid"   element={<VerFixture />} />
               </Routes>
             </Suspense>
           </main>

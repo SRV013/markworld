@@ -16,6 +16,25 @@ import styles from './Pronostico.module.css'
 const flagIconMap = new Map<string, string>()
 GROUPS.forEach((g) => g.teams.forEach((t) => flagIconMap.set(t.name, t.flagIcon)))
 
+function ShareFixtureBtn({ uid }: { uid: string }) {
+  const [copied, setCopied] = useState(false)
+  const handleShare = () => {
+    const url = `${window.location.origin}/ver/${uid}`
+    if (navigator.share) {
+      navigator.share({ title: 'Mi pronóstico Mundial 2026', url }).catch(() => {})
+    } else {
+      navigator.clipboard.writeText(url).catch(() => {})
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2500)
+  }
+  return (
+    <button className={`${styles.saveBtn} ${copied ? styles.saveBtnDone : ''}`} onClick={handleShare}>
+      {copied ? '✓ Link copiado' : '🔗 Compartir fixture'}
+    </button>
+  )
+}
+
 export function Pronostico() {
   const {
     phase, currentGroupIndex, picks, thirdPlaceRanking,
@@ -161,7 +180,10 @@ export function Pronostico() {
               {authLoading || fixtureLoading ? (
                 <p className={styles.saveModalHint}>Cargando…</p>
               ) : savedFixture ? (
-                <p className={styles.saveModalHint}>✓ Fixture guardado en la nube</p>
+                <>
+                  <p className={styles.saveModalHint}>✓ Fixture guardado en la nube</p>
+                  <ShareFixtureBtn uid={user!.uid} />
+                </>
               ) : !user ? (
                 <>
                   <p className={styles.saveModalHint}>

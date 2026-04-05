@@ -10,6 +10,9 @@ import { auth, provider, db } from '@/lib/firebase'
 import type { BracketMatch } from '@/types/bracket'
 
 export interface SavedFixture {
+  uid: string
+  displayName: string | null
+  photoURL: string | null
   champion: string
   picks: Record<string, string[]>
   thirdPlaceRanking: string[]
