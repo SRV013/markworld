@@ -101,7 +101,7 @@
   height: 90px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
   flex-shrink: 0;
 }
 
@@ -155,15 +155,14 @@
 }
 
 .gold {
-  /* background: color-mix(in srgb, #f59e0b 12%, var(--color-bg-subtle)); */
-  background: transparent;
+  background: color-mix(in srgb, #f59e0b 12%, var(--color-bg-subtle));
 }
 
 .gold .podiumName {
   color: #92400e;
 }
 
-[data-theme="dark"] .gold .podiumName {
+[data-theme='dark'] .gold .podiumName {
   color: #fcd34d;
 }
 
@@ -174,13 +173,11 @@
 }
 
 .silver {
-  /* background: color-mix(in srgb, #94a3b8 10%, var(--color-bg-subtle)); */
-  background: transparent;
+  background: color-mix(in srgb, #94a3b8 10%, var(--color-bg-subtle));
 }
 
 .bronze {
-  /* background: color-mix(in srgb, #b45309 10%, var(--color-bg-subtle)); */
-  background: transparent;
+  background: color-mix(in srgb, #b45309 10%, var(--color-bg-subtle));
 }
 
 .bronze .podiumName {
