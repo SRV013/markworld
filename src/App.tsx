@@ -33,6 +33,11 @@ function App() {
               </Routes>
             </Suspense>
           </main>
+          <footer className={styles.footer}>
+            <span>Todos los derechos reservados.</span>
+            <span className={styles.footerDot}>·</span>
+            <span>Diseñado por <a href="https://mark-devs.vercel.app/" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>markdevs</a></span>
+          </footer>
         </div>
       </BrowserRouter>
     </HelmetProvider>
