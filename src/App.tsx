@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { useTheme } from '@/hooks/useTheme'
 import { Header } from '@/components/Header/Header'
 import { Fallback } from '@/components/Fallback/Fallback'
+import fondoImg from '@/assets/fondo.jpg'
 import styles from './App.module.css'
 
 const Home       = lazy(() => import('@/pages/Home/Home').then(m => ({ default: m.Home })))
@@ -20,6 +21,7 @@ function App() {
     <HelmetProvider>
       <BrowserRouter>
         <div className={styles.wrapper} data-theme={theme}>
+          <img src={fondoImg} className={styles.fondo} alt="" aria-hidden />
           <Header />
           <main className={styles.main}>
             <Suspense fallback={<Fallback />}>
