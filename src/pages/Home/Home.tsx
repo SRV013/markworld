@@ -1,10 +1,21 @@
 import { NavLink } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { useAuthStore } from '@/store/authStore'
-import cupImg from '@/assets/cup.jpg'
+import wordsImg from '@/assets/words.png'
 import styles from './Home.module.css'
 
 const SECTIONS = [
+  {
+    to: '/mundiales',
+    icon: '📖',
+    title: 'Mundiales',
+    desc: 'Todas las ediciones desde Uruguay 1930 hasta Qatar 2022. Podios, participantes, campeones históricos y ranking acumulado.',
+  },
+  {
+    to: '/campeones',
+    icon: '🥇',
+    title: 'Todos los Campeones',
+    desc: 'Los 22 campeones del mundo. Planteles completos con dorsales, técnicos y fotos de cada edición.',
+  },
   {
     to: '/fixture',
     icon: '📋',
@@ -15,26 +26,12 @@ const SECTIONS = [
     to: '/pronostico',
     icon: '🏆',
     title: 'Tu Pronóstico',
-    desc: 'Elegí quién clasifica en cada grupo, rankea los mejores terceros y completá el cuadro eliminatorio hasta el campeón.',
-  },
-  {
-    to: '/mundiales',
-    icon: '📖',
-    title: 'Historia',
-    desc: 'Todas las ediciones desde Uruguay 1930 hasta Qatar 2022. Podios, participantes, campeones históricos y ranking acumulado.',
-  },
-  {
-    to: '/campeones',
-    icon: '🥇',
-    title: 'Campeones',
-    desc: 'Los 22 campeones del mundo. Planteles completos con dorsales, técnicos y fotos de cada edición.',
+    desc: 'Armá tu bracket completo, elegí tu campeón y compartilo con tus amigos. ¿Quién acierta más?',
+    promo: true,
   },
 ]
 
 export function Home() {
-  const { user, savedFixture } = useAuthStore()
-  const hasSaved = !!user && !!savedFixture
-
   return (
     <div className={styles.page}>
       <Helmet>
@@ -47,8 +44,7 @@ export function Home() {
 
       {/* Hero */}
       <section className={styles.hero}>
-        <img src={cupImg} className={styles.heroBg} alt="" aria-hidden />
-        <div className={styles.heroGlobe}>🌍</div>
+        <img src={wordsImg} className={styles.heroGlobe} alt="mark World" />
         <h1 className={styles.heroTitle}>
           mark<span className={styles.heroAccent}>World</span>
         </h1>
@@ -56,15 +52,12 @@ export function Home() {
           Estadísticas, historia y pronósticos del fútbol mundial.
           Toda la Copa del Mundo en un solo lugar.
         </p>
-        <NavLink to="/pronostico" className={styles.heroCta}>
-          {hasSaved ? 'Ver mi pronóstico →' : 'Hacer mi pronóstico →'}
-        </NavLink>
       </section>
 
       {/* Cards de secciones */}
       <section className={styles.sections}>
-        {SECTIONS.map(({ to, icon, title, desc }) => (
-          <NavLink key={to} to={to} className={styles.card}>
+        {SECTIONS.map(({ to, icon, title, desc, promo }) => (
+          <NavLink key={to} to={to} className={`${styles.card} ${promo ? styles.cardPromo : ''}`}>
             <span className={styles.cardIcon}>{icon}</span>
             <div className={styles.cardBody}>
               <h2 className={styles.cardTitle}>{title}</h2>
@@ -73,26 +66,6 @@ export function Home() {
             <span className={styles.cardArrow}>→</span>
           </NavLink>
         ))}
-      </section>
-
-      {/* Stats rápidas */}
-      <section className={styles.stats}>
-        <div className={styles.statItem}>
-          <span className={styles.statNum}>48</span>
-          <span className={styles.statLabel}>Equipos 2026</span>
-        </div>
-        <div className={styles.statItem}>
-          <span className={styles.statNum}>12</span>
-          <span className={styles.statLabel}>Grupos</span>
-        </div>
-        <div className={styles.statItem}>
-          <span className={styles.statNum}>104</span>
-          <span className={styles.statLabel}>Partidos</span>
-        </div>
-        <div className={styles.statItem}>
-          <span className={styles.statNum}>22</span>
-          <span className={styles.statLabel}>Ediciones históricas</span>
-        </div>
       </section>
 
     </div>
