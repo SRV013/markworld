@@ -13,24 +13,37 @@
     border-color var(--transition-base);
 }
 
-/* ---- LOGO ---- */
 .logo {
-  text-decoration: none;
   display: flex;
-  align-items: baseline;
-  gap: 1px;
-  font-size: var(--font-size-xl);
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.logoMark {
-  color: var(--color-primary-500);
-}
-
-.logoWord {
   color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: -0.05em;
+  transition: all var(--transition-speed);
 }
+
+.logoBracket {
+  color: var(--color-primary-600);
+  text-shadow: var(--shadow-neon);
+}
+
+.logoText {
+  background: linear-gradient(
+    90deg,
+    var(--color-text),
+    var(--color-text-muted)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo:hover {
+  transform: scale(1.02);
+}
+
 
 /* ---- NAV desktop ---- */
 .nav {
