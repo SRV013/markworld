@@ -1,16 +1,34 @@
 import { Helmet } from 'react-helmet-async'
 import { historyCup } from '@/data/historyCup'
-import mascot1994 from '@/assets/mascotas/1994.png'
-import mascot1998 from '@/assets/mascotas/1998.png'
-import mascot2002 from '@/assets/mascotas/2002.png'
-import mascot2006 from '@/assets/mascotas/2006.png'
-import mascot2010 from '@/assets/mascotas/2010.png'
-import mascot2014 from '@/assets/mascotas/2014.png'
-import mascot2018 from '@/assets/mascotas/2018.png'
-import mascot2022 from '@/assets/mascotas/2022.png'
+import mascot1958 from '@/assets/mascotas/1958.webp'
+import mascot1962 from '@/assets/mascotas/1962.webp'
+import mascot1966 from '@/assets/mascotas/1966.webp'
+import mascot1970 from '@/assets/mascotas/1970.webp'
+import mascot1974 from '@/assets/mascotas/1974.webp'
+import mascot1978 from '@/assets/mascotas/1978.webp'
+import mascot1982 from '@/assets/mascotas/1982.webp'
+import mascot1986 from '@/assets/mascotas/1986.webp'
+import mascot1990 from '@/assets/mascotas/1990.webp'
+import mascot1994 from '@/assets/mascotas/1994.webp'
+import mascot1998 from '@/assets/mascotas/1998.webp'
+import mascot2002 from '@/assets/mascotas/2002.webp'
+import mascot2006 from '@/assets/mascotas/2006.webp'
+import mascot2010 from '@/assets/mascotas/2010.webp'
+import mascot2014 from '@/assets/mascotas/2014.webp'
+import mascot2018 from '@/assets/mascotas/2018.webp'
+import mascot2022 from '@/assets/mascotas/2022.webp'
 import styles from './Mundiales.module.css'
 
 const MASCOTS: Record<number, string> = {
+  1958: mascot1958,
+  1962: mascot1962,
+  1966: mascot1966,
+  1970: mascot1970,
+  1974: mascot1974,
+  1978: mascot1978,
+  1982: mascot1982,
+  1986: mascot1986,
+  1990: mascot1990,
   1994: mascot1994,
   1998: mascot1998,
   2002: mascot2002,
@@ -127,15 +145,14 @@ export function Mundiales() {
             return (
               <article key={cup.year} className={styles.cupCard}>
 
-                {/* Header: año + sede */}
+                {/* Header: año + sede + mascota */}
                 <div className={styles.cupHeader}>
-                  <span className={styles.year}>{cup.year}</span>
-                  <div className={styles.cupInfo}>
+                  <div className={styles.cupLeft}>
+                    <span className={styles.year}>{cup.year}</span>
                     <span className={styles.host}>
                       <span className={`fi fi-${flagIcon(cup.host)} ${styles.hostFlag}`} />
                       {cup.host}
                     </span>
-                    <span className={styles.teamsCount}>{cup.teams_count} equipos</span>
                   </div>
                   {MASCOTS[cup.year] && (
                     <img

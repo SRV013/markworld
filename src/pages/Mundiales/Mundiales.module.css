@@ -48,13 +48,13 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  position: relative;
 }
 
 /* Header: año + sede */
 .cupHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
   background: linear-gradient(
@@ -65,18 +65,17 @@
   color: #fff;
 }
 
-.year {
-  font-size: var(--font-size-4xl);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  flex-shrink: 0;
-}
-
-.cupInfo {
+.cupLeft {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+.year {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .host {
@@ -96,21 +95,12 @@
   flex-shrink: 0;
 }
 
-.teamsCount {
-  font-size: var(--font-size-sm);
-  opacity: 0.7;
-}
-
 .mascot {
-  position: absolute;
-  top: 280px;
-  right: 30px;
-  height: 140px;
+  height: 90px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
-  z-index: 1;
-  pointer-events: none;
+  flex-shrink: 0;
 }
 
 /* ── Podio ── */
