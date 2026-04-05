@@ -129,14 +129,14 @@
 }
 
 .cardName {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--color-text);
   line-height: 1.2;
 }
 
 .cardYear {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-base);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
 }
