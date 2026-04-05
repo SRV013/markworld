@@ -69,6 +69,28 @@ const champions = (historyCup as any[])
 
 const uniqueChampions = new Set(champions.map((c) => c.champion)).size
 
+function FinalInfo({ year, runnerUp }: { year: number; runnerUp: string }) {
+  const m = FINAL_MATCHES[year]
+  if (!m) return null
+
+  let resultado = `${m.scoreChampion}-${m.scoreRunnerUp}`
+  if (m.penChampion !== undefined) resultado += ` (${m.penChampion}-${m.penRunnerUp} pen.)`
+  else if (m.extraTime) resultado += ' a.e.t.'
+
+  const goals = [
+    ...m.goalsChampion.map(g => `${g.player} ${g.minute}'${g.pen ? ' (P)' : g.og ? ' (OG)' : ''}`),
+    ...m.goalsRunnerUp.map(g => `${g.player} ${g.minute}'${g.pen ? ' (P)' : g.og ? ' (OG)' : ''}`),
+  ].join(', ')
+
+  return (
+    <div className={styles.cardFinal}>
+      <span><b>Rival:</b> {runnerUp}</span>
+      <span><b>Resultado:</b> {resultado}</span>
+      {goals && <span><b>Resumen:</b> {goals}</span>}
+    </div>
+  )
+}
+
 export function Campeones() {
   const [modalYear, setModalYear] = useState<number | null>(null)
   const modalData = modalYear !== null ? PLAYERS_BY_YEAR[modalYear] : null
@@ -118,11 +140,7 @@ export function Campeones() {
                   <span className={styles.cardYear}>{year}</span>
                 </div>
               </div>
-              {FINAL_MATCHES[year] && (
-                <span className={styles.cardFinal}>
-                  {getFinalSummary(FINAL_MATCHES[year], runnerUp)}
-                </span>
-              )}
+              <FinalInfo year={year} runnerUp={runnerUp} />
             </div>
           </div>
         ))}
