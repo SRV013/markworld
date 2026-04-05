@@ -145,14 +145,14 @@ export function Mundiales() {
             return (
               <article key={cup.year} className={styles.cupCard}>
 
-                {/* Header: año + sede + mascota */}
+                {/* Header: bandera + sede + año + mascota */}
                 <div className={styles.cupHeader}>
-                  <div className={styles.cupLeft}>
-                    <span className={styles.year}>{cup.year}</span>
-                    <span className={styles.host}>
-                      <span className={`fi fi-${flagIcon(cup.host)} ${styles.hostFlag}`} />
-                      {cup.host}
-                    </span>
+                  <div className={styles.cupTop}>
+                    <span className={`fi fi-${flagIcon(cup.host)} ${styles.hostFlag}`} />
+                    <div className={styles.cupText}>
+                      <span className={styles.host}>{cup.host}</span>
+                      <span className={styles.year}>{cup.year}</span>
+                    </div>
                   </div>
                   {MASCOTS[cup.year] && (
                     <img

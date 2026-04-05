@@ -65,34 +65,36 @@
   color: #fff;
 }
 
-.cupLeft {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.year {
-  font-size: var(--font-size-3xl);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.host {
+.cupTop {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  opacity: 0.95;
+  gap: var(--space-3);
+}
+
+.cupText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .hostFlag {
-  width: 1.6rem;
-  height: 1.2rem;
-  border-radius: 2px;
+  width: 3.6rem;
+  height: 2.7rem;
+  border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.host {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.year {
+  font-size: var(--font-size-base);
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
 }
 
 .mascot {
