@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useAuthStore } from '@/store/authStore'
+import cupImg from '@/assets/cup.jpg'
 import styles from './Home.module.css'
 
 const SECTIONS = [
@@ -46,6 +47,7 @@ export function Home() {
 
       {/* Hero */}
       <section className={styles.hero}>
+        <img src={cupImg} className={styles.heroBg} alt="" aria-hidden />
         <div className={styles.heroGlobe}>🌍</div>
         <h1 className={styles.heroTitle}>
           mark<span className={styles.heroAccent}>World</span>
