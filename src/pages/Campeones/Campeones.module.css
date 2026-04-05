@@ -1,7 +1,7 @@
 .page {
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-1);
 }
 
 .pageHeader {
@@ -273,4 +273,15 @@
   color: var(--color-primary-400);
   font-size: var(--font-size-xs);
   flex-shrink: 0;
+}
+
+@media (width > 500px) {
+  .page {
+    padding: var(--space-4);
+  }
+}
+@media (width > 700px) {
+  .page {
+    padding: var(--space-8) var(--space-4);
+  }
 }

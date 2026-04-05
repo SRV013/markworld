@@ -206,8 +206,12 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.08));
-  border: 1px solid rgba(251,191,36,0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.2),
+    rgba(251, 191, 36, 0.08)
+  );
+  border: 1px solid rgba(251, 191, 36, 0.5);
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
   font-weight: 700;
@@ -221,9 +225,9 @@
   opacity: 0.85;
 }
 
-[data-theme='dark'] .championBadge {
+[data-theme="dark"] .championBadge {
   color: #fbbf24;
-  border-color: rgba(251,191,36,0.3);
+  border-color: rgba(251, 191, 36, 0.3);
 }
 
 /* ---- MODAL GUARDAR FIXTURE ---- */
@@ -290,13 +294,17 @@
   font-size: var(--font-size-base);
   font-weight: 700;
   color: #b45309;
-  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05));
-  border: 1px solid rgba(251,191,36,0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.15),
+    rgba(251, 191, 36, 0.05)
+  );
+  border: 1px solid rgba(251, 191, 36, 0.4);
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-5);
 }
 
-[data-theme='dark'] .saveModalChampion {
+[data-theme="dark"] .saveModalChampion {
   color: #fbbf24;
 }
 
@@ -327,22 +335,24 @@
   font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
   justify-content: center;
 }
 
 .googleBtn:hover {
   background: #f8f9fa;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-[data-theme='dark'] .googleBtn {
+[data-theme="dark"] .googleBtn {
   background: #2d2d2d;
   color: #e8eaed;
   border-color: #5f6368;
 }
 
-[data-theme='dark'] .googleBtn:hover {
+[data-theme="dark"] .googleBtn:hover {
   background: #3c3c3c;
 }
 
@@ -482,10 +492,14 @@
   color: var(--color-text-muted);
 }
 
-
 @media (width > 500px) {
   .page {
     padding: var(--space-4);
+  }
+}
+@media (width > 700px) {
+  .page {
+    padding: var(--space-8) var(--space-4);
   }
 }
 

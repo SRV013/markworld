@@ -62,13 +62,13 @@
 }
 
 
-@media (width> 500px) {
+@media (width > 500px) {
   .page {
     padding: var(--space-4);
   }
 }
-@media (width> 700px) {
+@media (width > 700px) {
   .page {
-    padding: var(--space-8);
+    padding: var(--space-8) var(--space-4);
   }
 }
