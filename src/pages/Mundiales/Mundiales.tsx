@@ -1,5 +1,8 @@
 import { Helmet } from 'react-helmet-async'
 import { historyCup } from '@/data/historyCup'
+import mascot1994 from '@/assets/mascotas/1994.png'
+import mascot1998 from '@/assets/mascotas/1998.png'
+import mascot2002 from '@/assets/mascotas/2002.png'
 import mascot2006 from '@/assets/mascotas/2006.png'
 import mascot2010 from '@/assets/mascotas/2010.png'
 import mascot2014 from '@/assets/mascotas/2014.png'
@@ -8,6 +11,9 @@ import mascot2022 from '@/assets/mascotas/2022.png'
 import styles from './Mundiales.module.css'
 
 const MASCOTS: Record<number, string> = {
+  1994: mascot1994,
+  1998: mascot1998,
+  2002: mascot2002,
   2006: mascot2006,
   2010: mascot2010,
   2014: mascot2014,
