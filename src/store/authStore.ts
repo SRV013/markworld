@@ -29,6 +29,7 @@ interface AuthState {
   signOut: () => Promise<void>
   refreshFixture: (uid: string) => Promise<void>
   markFixtureLoaded: () => void
+  resetFixtureLoaded: () => void
 }
 
 export const useAuthStore = create<AuthState>((set) => {
@@ -74,5 +75,6 @@ export const useAuthStore = create<AuthState>((set) => {
     },
 
     markFixtureLoaded: () => set({ fixtureLoaded: true }),
+    resetFixtureLoaded: () => set({ fixtureLoaded: false }),
   }
 })

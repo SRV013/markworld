@@ -42,7 +42,7 @@ export function Pronostico() {
     toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset, loadSaved,
   } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket, matches } = useBracketStore()
-  const { user, loading: authLoading, savedFixture, fixtureLoading, fixtureLoaded, signInWithGoogle, signOut, refreshFixture, markFixtureLoaded } = useAuthStore()
+  const { user, loading: authLoading, savedFixture, fixtureLoading, fixtureLoaded, signInWithGoogle, signOut, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
   const pickerRef = useRef<HTMLDivElement>(null)
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -67,6 +67,13 @@ export function Pronostico() {
     }
     prevChampionRef.current = champion
   }, [champion])
+
+  // Scroll al último grupo — debe estar antes de los early returns (Rules of Hooks)
+  const isLastGroup = currentGroupIndex === GROUPS.length - 1
+  useEffect(() => {
+    if (phase !== 'picking' || !isLastGroup || !pickerRef.current) return
+    pickerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [isLastGroup, phase])
 
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
@@ -100,6 +107,7 @@ export function Pronostico() {
     const handleReset = () => {
       reset()
       resetBracket()
+      resetFixtureLoaded()
     }
 
     const handleSave = async () => {
@@ -285,17 +293,10 @@ export function Pronostico() {
   const group = GROUPS[currentGroupIndex]
   const selected = picks[group.id] ?? []
   const isFirst = currentGroupIndex === 0
-  const isLast = currentGroupIndex === GROUPS.length - 1
+  const isLast = isLastGroup
   const canAdvance = selected.length === 3
   const allGroupsDone = GROUPS.every((g) => (picks[g.id] ?? []).length === 3)
   const completedCount = GROUPS.filter((g) => (picks[g.id] ?? []).length === 3).length
-
-  // Al llegar al último grupo, centrar verticalmente el picker
-  useEffect(() => {
-    if (isLast && pickerRef.current) {
-      pickerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }, [isLast])
 
   return (
     <div className={styles.page}>
