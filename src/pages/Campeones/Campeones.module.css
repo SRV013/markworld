@@ -109,7 +109,7 @@
 /* ── Info ────────────────────────────────────────────────────── */
 .cardInfo {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
 }
@@ -139,6 +139,13 @@
   font-size: var(--font-size-base);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+.cardFinal {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin-top: 2px;
 }
 
 /* ── Modal ───────────────────────────────────────────────────── */

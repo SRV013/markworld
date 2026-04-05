@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { historyCup } from '@/data/historyCup'
 import { PLAYERS_BY_YEAR } from '@/data/championsPlayers'
+import { FINAL_MATCHES, getFinalSummary } from '@/data/finalMatches'
 import img1930 from '@/assets/1930.jpeg'
 import img1934 from '@/assets/1934.jpeg'
 import img1938 from '@/assets/1938.jpeg'
@@ -64,7 +65,7 @@ function normalize(name: string) {
 const champions = (historyCup as any[])
   .flatMap((item) => (Array.isArray(item) ? item : [item]))
   .sort((a, b) => b.year - a.year)
-  .map(({ year, champion }) => ({ year, champion: normalize(champion) }))
+  .map(({ year, champion, runner_up }) => ({ year, champion: normalize(champion), runnerUp: runner_up as string }))
 
 const uniqueChampions = new Set(champions.map((c) => c.champion)).size
 
@@ -88,7 +89,7 @@ export function Campeones() {
       </div>
 
       <div className={styles.grid}>
-        {champions.map(({ year, champion }) => (
+        {champions.map(({ year, champion, runnerUp }) => (
           <div
             key={year}
             className={styles.card}
@@ -114,6 +115,11 @@ export function Campeones() {
               <div className={styles.cardText}>
                 <span className={styles.cardName}>{champion}</span>
                 <span className={styles.cardYear}>{year}</span>
+                {FINAL_MATCHES[year] && (
+                  <span className={styles.cardFinal}>
+                    {getFinalSummary(FINAL_MATCHES[year], runnerUp)}
+                  </span>
+                )}
               </div>
             </div>
           </div>
