@@ -386,8 +386,13 @@
   font-size: var(--font-size-sm);
 }
 
-@media (width > 500px) {
+@media (max-width: 768px) {
   .page {
-    padding: var(--space-8);
+    padding: var(--space-4);
+  }
+}
+@media (max-width: 568px) {
+  .page {
+    padding: var(--space-3);
   }
 }
