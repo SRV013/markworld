@@ -67,10 +67,10 @@
 }
 
 .flag {
-  width: 24px;
-  height: 18px;
+  width: 2.8rem;
+  height: 2.1rem;
   flex-shrink: 0;
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -81,21 +81,27 @@
   flex-shrink: 0;
 }
 
-.teamName {
+.teamInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   flex: 1;
+  min-width: 0;
+}
+
+.teamName {
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .conf {
   font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--color-text-muted);
-  background-color: var(--color-hover);
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  flex-shrink: 0;
 }
 
 /* ---- MOBILE ---- */
@@ -106,7 +112,7 @@
   }
 
   .conf {
-    display: none;
+    font-size: 10px;
   }
 }
 

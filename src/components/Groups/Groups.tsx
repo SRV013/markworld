@@ -25,8 +25,10 @@ function GroupCard({ group }: GroupCardProps) {
         {group.teams.map((team) => (
           <li key={team.name} className={styles.teamRow}>
             <span className={`fi fi-${team.code.toLowerCase()} ${styles.flag}`} />
-            <span className={styles.teamName}>{team.name}</span>
-            <span className={styles.conf}>{CONF_LABEL[team.confederation]}</span>
+            <div className={styles.teamInfo}>
+              <span className={styles.teamName}>{team.name}</span>
+              <span className={styles.conf}>{CONF_LABEL[team.confederation]}</span>
+            </div>
           </li>
         ))}
       </ul>
