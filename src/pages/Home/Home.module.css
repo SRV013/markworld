@@ -1,7 +1,7 @@
 .page {
   max-width: 860px;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-1);
   display: flex;
   flex-direction: column;
   gap: var(--space-12);
@@ -14,7 +14,7 @@
   align-items: center;
   text-align: center;
   gap: var(--space-4);
-  padding: var(--space-10) 0;
+  padding: var(--space-2) 0;
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
@@ -32,7 +32,7 @@
   z-index: 0;
 }
 
-[data-theme='light'] .heroBg {
+[data-theme="light"] .heroBg {
   opacity: 0.05;
 }
 
@@ -59,7 +59,11 @@
 }
 
 .heroAccent {
-  background: linear-gradient(135deg, var(--color-primary-500), var(--color-secondary-500));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-500),
+    var(--color-secondary-500)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -76,13 +80,19 @@
   display: inline-block;
   margin-top: var(--space-2);
   padding: var(--space-3) var(--space-8);
-  background: linear-gradient(135deg, var(--color-primary-600), var(--color-secondary-600));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-600),
+    var(--color-secondary-600)
+  );
   color: #ffffff;
   font-size: var(--font-size-base);
   font-weight: 600;
   border-radius: var(--radius-full);
   text-decoration: none;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .heroCta:hover {
@@ -104,17 +114,21 @@
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-bg-subtle);
+  /* background: var(--color-bg-subtle); */
   text-decoration: none;
   color: inherit;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .card:hover {
   border-color: var(--color-primary-400);
   background: var(--color-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .cardPromo {
@@ -174,6 +188,9 @@
 
   .cardArrow {
     margin-top: auto;
+  }
+  .hero {
+    padding: var(--space-8) 0;
   }
 }
 
