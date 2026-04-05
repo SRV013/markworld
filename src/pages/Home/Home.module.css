@@ -167,7 +167,7 @@
   .card {
     flex-direction: column;
     align-items: flex-start;
-    aspect-ratio: 1;
+    /* aspect-ratio: 1; */
     padding: var(--space-6);
     gap: var(--space-3);
   }
