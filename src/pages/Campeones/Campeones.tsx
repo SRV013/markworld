@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { historyCup } from '@/data/historyCup'
 import { PLAYERS_BY_YEAR } from '@/data/championsPlayers'
-import { FINAL_MATCHES, getFinalSummary } from '@/data/finalMatches'
+import { FINAL_MATCHES } from '@/data/finalMatches'
 import img1930 from '@/assets/equipos/1930.jpeg'
 import img1934 from '@/assets/equipos/1934.jpeg'
 import img1938 from '@/assets/equipos/1938.jpeg'
@@ -111,16 +111,18 @@ export function Campeones() {
 
             {/* Info */}
             <div className={styles.cardInfo}>
-              <span className={`fi fi-${flagIcon(champion)} ${styles.cardFlag}`} />
-              <div className={styles.cardText}>
-                <span className={styles.cardName}>{champion}</span>
-                <span className={styles.cardYear}>{year}</span>
-                {FINAL_MATCHES[year] && (
-                  <span className={styles.cardFinal}>
-                    {getFinalSummary(FINAL_MATCHES[year], runnerUp)}
-                  </span>
-                )}
+              <div className={styles.cardTop}>
+                <span className={`fi fi-${flagIcon(champion)} ${styles.cardFlag}`} />
+                <div className={styles.cardText}>
+                  <span className={styles.cardName}>{champion}</span>
+                  <span className={styles.cardYear}>{year}</span>
+                </div>
               </div>
+              {FINAL_MATCHES[year] && (
+                <span className={styles.cardFinal}>
+                  {getFinalSummary(FINAL_MATCHES[year], runnerUp)}
+                </span>
+              )}
             </div>
           </div>
         ))}

@@ -109,15 +109,21 @@
 /* ── Info ────────────────────────────────────────────────────── */
 .cardInfo {
   display: flex;
-  align-items: baseline;
-  gap: var(--space-3);
+  flex-direction: column;
+  gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
 }
 
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .cardFlag {
-  width: 1.6rem;
-  height: 1.2rem;
-  border-radius: 2px;
+  width: 3.6rem;
+  height: 2.7rem;
+  border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -145,7 +151,6 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   line-height: 1.4;
-  margin-top: 2px;
 }
 
 /* ── Modal ───────────────────────────────────────────────────── */
