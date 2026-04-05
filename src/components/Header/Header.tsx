@@ -45,8 +45,8 @@ export function Header() {
         </button>
 
         <NavLink to="/" className={styles.logo} onClick={closeMenu}>
-          <span className={styles.logoMark}>mark</span>
-          <span className={styles.logoWord}>World</span>
+          <span className={styles.logoMark}>{'</> '}mark</span>
+          <span className={styles.logoWord}>world</span>
         </NavLink>
 
         {/* Nav desktop */}
