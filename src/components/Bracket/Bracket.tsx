@@ -194,7 +194,7 @@ function CenterPanel({ final, champion, locked, onPick }: CenterPanelProps) {
         </div>
       )}
       {/* ── Final ── */}
-      <p className={styles.centerLabel}>Campeón</p>
+      <p className={styles.centerLabel}>{champion ? 'Campeón' : 'Final'}</p>
       {final && <CenterCard match={final} locked={locked} height={FINAL_MH} onPick={onPick} />}
     </div>
   )
@@ -310,28 +310,58 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
     rightHalf[r] = ms.slice(half)
   })
 
-  const activeRoundIdx = ROUNDS.findIndex((r) =>
-    byRound[r].some((m) => m.winner === null)
-  )
-
   const champion = byRound['F'][0]?.winner ?? null
+  const sfDone   = byRound['SF'].length === 2 && byRound['SF'].every((m) => m.winner !== null)
 
-  const sfDone = byRound['SF'].length === 2 && byRound['SF'].every((m) => m.winner !== null)
+  // ── Contadores de partidos terminados por mitad y ronda ──
+  const lR32Done = leftHalf['R32'].filter(m => m.winner !== null).length
+  const lR16Done = leftHalf['R16'].filter(m => m.winner !== null).length
+  const lQFDone  = leftHalf['QF'].filter(m => m.winner !== null).length
+  const rR32Done = rightHalf['R32'].filter(m => m.winner !== null).length
+  const rR16Done = rightHalf['R16'].filter(m => m.winner !== null).length
+  const rQFDone  = rightHalf['QF'].filter(m => m.winner !== null).length
 
   useImperativeHandle(ref, () => bracketRef.current as HTMLDivElement)
 
+  // ── Auto-scroll al completar cada ronda en cada mitad ──
+  const prevDone = useRef({ lR32: -1, lR16: -1, lQF: -1, rR32: -1, rR16: -1, rQF: -1, sf: false })
+
   useEffect(() => {
     if (!outerRef.current) return
-    if (sfDone) {
-      const finalCenterX = COL_LEFT['F'] * COL + MW / 2
-      const left = Math.max(0, finalCenterX - outerRef.current.clientWidth / 2)
-      outerRef.current.scrollTo({ left, behavior: 'smooth' })
-    } else if (activeRoundIdx !== -1 && activeRoundIdx < 4) {
-      const activeLCol = activeRoundIdx * COL
-      const left = Math.max(0, activeLCol - outerRef.current.clientWidth / 4)
-      outerRef.current.scrollTo({ left, behavior: 'smooth' })
+    const el = outerRef.current
+    const w  = el.clientWidth
+    const prev = prevDone.current
+
+    // Centra la columna indicada en el viewport
+    const scrollToCol = (colLeft: number) => {
+      el.scrollTo({ left: Math.max(0, colLeft + MW / 2 - w / 2), behavior: 'smooth' })
     }
-  }, [sfDone, activeRoundIdx])
+
+    if (prev.lR32 === -1) {
+      // Primer render: guardar estado actual sin scrollear
+      prevDone.current = { lR32: lR32Done, lR16: lR16Done, lQF: lQFDone, rR32: rR32Done, rR16: rR16Done, rQF: rQFDone, sf: sfDone }
+      return
+    }
+
+    if (sfDone && !prev.sf) {
+      // Ambas semis listas → centrar en la Final
+      scrollToCol((3 * COL + MW + 5 * COL - CENTER_SHRINK) / 2 - FINAL_MW / 2)
+    } else if (lR32Done === 8 && prev.lR32 < 8) {
+      scrollToCol(COL_LEFT['R16'] * COL)           // izq: R32 → R16
+    } else if (lR16Done === 4 && prev.lR16 < 4) {
+      scrollToCol(COL_LEFT['QF'] * COL)            // izq: R16 → QF
+    } else if (lQFDone === 2 && prev.lQF < 2) {
+      scrollToCol(COL_LEFT['SF'] * COL)            // izq: QF → SF
+    } else if (rR32Done === 8 && prev.rR32 < 8) {
+      scrollToCol(COL_RIGHT['R16'] * COL - CENTER_SHRINK)  // der: R32 → R16
+    } else if (rR16Done === 4 && prev.rR16 < 4) {
+      scrollToCol(COL_RIGHT['QF'] * COL - CENTER_SHRINK)   // der: R16 → QF
+    } else if (rQFDone === 2 && prev.rQF < 2) {
+      scrollToCol(COL_RIGHT['SF'] * COL - CENTER_SHRINK)   // der: QF → SF
+    }
+
+    prevDone.current = { lR32: lR32Done, lR16: lR16Done, lQF: lQFDone, rR32: rR32Done, rR16: rR16Done, rQF: rQFDone, sf: sfDone }
+  }, [lR32Done, lR16Done, lQFDone, rR32Done, rR16Done, rQFDone, sfDone])
 
   const leftRounds  = ['R32', 'R16', 'QF', 'SF'] as Round[]
   const rightRounds = ['SF', 'QF', 'R16', 'R32'] as Round[]
