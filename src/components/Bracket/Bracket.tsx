@@ -1,5 +1,5 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { ROUNDS, ROUND_LABELS } from '@/types/bracket'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import { ROUNDS } from '@/types/bracket'
 import type { BracketMatch, Round } from '@/types/bracket'
 import { useBracketStore } from '@/store/bracketStore'
 import { GROUPS } from '@/data/worldCup2026'
@@ -48,9 +48,6 @@ const CENTER_PANEL_TOP = FINAL_TOP - 40
 // ─────────── flagIcon lookup ─────────────────
 const flagIconMap = new Map<string, string>()
 GROUPS.forEach((g) => g.teams.forEach((t) => flagIconMap.set(t.name, t.flagIcon)))
-
-// Rondas a mostrar en UI (sin 3er Puesto)
-const BRACKET_ROUNDS = ROUNDS.filter((r) => r !== '3P')
 
 // ─────────── TeamSlot ───────────────────────
 interface TeamSlotProps {
@@ -271,130 +268,6 @@ function ConnectorSVGRight({ fromRoundIdx, fromCount, left }: ConnectorProps) {
   )
 }
 
-// ─────────── Vista mobile por ronda ─────────
-interface MobileViewProps {
-  byRound: Record<Round, BracketMatch[]>
-  activeRoundIdx: number
-  locked: boolean
-  onPick: (id: string, team: string) => void
-}
-
-function MobileView({ byRound, activeRoundIdx, locked, onPick }: MobileViewProps) {
-  const [selectedRoundIdx, setSelectedRoundIdx] = useState(() =>
-    Math.min(activeRoundIdx === -1 ? BRACKET_ROUNDS.length - 1 : activeRoundIdx, BRACKET_ROUNDS.length - 1)
-  )
-
-  useEffect(() => {
-    if (activeRoundIdx !== -1) {
-      setSelectedRoundIdx(Math.min(activeRoundIdx, BRACKET_ROUNDS.length - 1))
-    }
-  }, [activeRoundIdx])
-
-  const currentRound = BRACKET_ROUNDS[selectedRoundIdx]
-  const matches = byRound[currentRound]
-  const done = matches.filter((m) => m.winner !== null).length
-  const total = matches.length
-
-  return (
-    <div className={styles.mobileView}>
-      {/* Tabs */}
-      <div className={styles.mobileTabs}>
-        {BRACKET_ROUNDS.map((r, ri) => {
-          const roundMatches = byRound[r]
-          const roundDone = roundMatches.filter((m) => m.winner !== null).length
-          const isComplete = roundDone === roundMatches.length && roundMatches.length > 0
-          const isActive = ri === selectedRoundIdx
-          return (
-            <button
-              key={r}
-              className={[
-                styles.mobileTab,
-                isActive ? styles.mobileTabActive : '',
-                isComplete ? styles.mobileTabDone : '',
-              ].join(' ')}
-              onClick={() => setSelectedRoundIdx(ri)}
-            >
-              {ROUND_LABELS[r]}
-              {isComplete && <span className={styles.mobileTabCheck}>✓</span>}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Progreso */}
-      <p className={styles.mobileProgress}>
-        {total > 1
-          ? `${done} / ${total} partidos definidos`
-          : done === 1 ? 'Campeón elegido ✓' : 'Elegí el campeón'}
-      </p>
-
-      {/* Campeón (tab Final) */}
-      {currentRound === 'F' && byRound['F'][0]?.winner && (
-        <div className={styles.mobileChampion}>
-          <span className={styles.mobileChampionTrophy}>🏆</span>
-          <div className={styles.mobileChampionTeam}>
-            <span className={`fi fi-${flagIconMap.get(byRound['F'][0].winner!) ?? 'un'} ${styles.mobileChampionFlag}`} />
-            <span className={styles.mobileChampionName}>{byRound['F'][0].winner}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Partidos */}
-      <div className={styles.mobileMatchList}>
-        {matches.map((match) => {
-          const isPlayable = !!match.teamA && !!match.teamB
-          const isFinal = match.round === 'F'
-          return (
-            <div
-              key={match.id}
-              className={`${styles.mobileMatchCard} ${isFinal ? styles.mobileFinalCard : ''}`}
-            >
-              {match.seedLabel && (
-                <span className={styles.mobileSeedLabel}>{match.seedLabel}</span>
-              )}
-              <TeamSlot
-                team={match.teamA}
-                isWinner={match.winner === match.teamA && !!match.teamA}
-                isFinal={isFinal}
-                warm={isFinal}
-                disabled={!isPlayable || locked}
-                onClick={() => match.teamA && onPick(match.id, match.teamA)}
-              />
-              <div className={styles.divider} />
-              <TeamSlot
-                team={match.teamB}
-                isWinner={match.winner === match.teamB && !!match.teamB}
-                isFinal={isFinal}
-                warm={isFinal}
-                disabled={!isPlayable || locked}
-                onClick={() => match.teamB && onPick(match.id, match.teamB)}
-              />
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Navegación */}
-      <div className={styles.mobileNav}>
-        <button
-          className={styles.mobileNavBtn}
-          onClick={() => setSelectedRoundIdx((i) => Math.max(0, i - 1))}
-          disabled={selectedRoundIdx === 0}
-        >
-          ← Anterior
-        </button>
-        <button
-          className={styles.mobileNavBtn}
-          onClick={() => setSelectedRoundIdx((i) => Math.min(BRACKET_ROUNDS.length - 1, i + 1))}
-          disabled={selectedRoundIdx === BRACKET_ROUNDS.length - 1}
-        >
-          Siguiente →
-        </button>
-      </div>
-    </div>
-  )
-}
-
 // ─────────── Bracket principal ──────────────
 interface BracketProps {
   locked?: boolean
@@ -414,16 +287,7 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
   const { matches: storeMatches, pickWinner } = useBracketStore()
   const matches = propMatches ?? storeMatches
   const outerRef   = useRef<HTMLDivElement>(null) // scroll container
-  const bracketRef = useRef<HTMLDivElement>(null) // captura desktop
-  const mobileRef  = useRef<HTMLDivElement>(null) // captura mobile
-
-  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)')
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
+  const bracketRef = useRef<HTMLDivElement>(null) // captura
 
   const byRound = ROUNDS.reduce<Record<Round, BracketMatch[]>>(
     (acc, r) => { acc[r] = matches.filter((m) => m.round === r); return acc },
@@ -454,13 +318,10 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
 
   const sfDone = byRound['SF'].length === 2 && byRound['SF'].every((m) => m.winner !== null)
 
-  // Expone el elemento DOM correcto según viewport para captura de imagen
-  useImperativeHandle(ref, () =>
-    (isMobile ? mobileRef.current : bracketRef.current) as HTMLDivElement
-  , [isMobile])
+  useImperativeHandle(ref, () => bracketRef.current as HTMLDivElement)
 
   useEffect(() => {
-    if (isMobile || !outerRef.current) return
+    if (!outerRef.current) return
     if (sfDone) {
       const finalCenterX = COL_LEFT['F'] * COL + MW / 2
       const left = Math.max(0, finalCenterX - outerRef.current.clientWidth / 2)
@@ -470,23 +331,8 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
       const left = Math.max(0, activeLCol - outerRef.current.clientWidth / 4)
       outerRef.current.scrollTo({ left, behavior: 'smooth' })
     }
-  }, [sfDone, activeRoundIdx, isMobile])
+  }, [sfDone, activeRoundIdx])
 
-  // ── Vista mobile ──
-  if (isMobile) {
-    return (
-      <div ref={mobileRef}>
-        <MobileView
-          byRound={byRound}
-          activeRoundIdx={activeRoundIdx}
-          locked={locked}
-          onPick={pickWinner}
-        />
-      </div>
-    )
-  }
-
-  // ── Vista desktop ──
   const leftRounds  = ['R32', 'R16', 'QF', 'SF'] as Round[]
   const rightRounds = ['SF', 'QF', 'R16', 'R32'] as Round[]
 
