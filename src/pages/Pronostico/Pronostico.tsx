@@ -38,13 +38,12 @@ function ShareFixtureBtn({ uid }: { uid: string }) {
 
 export function Pronostico() {
   const {
-    phase, currentGroupIndex, picks, thirdPlaceRanking,
-    start, toggleTeam, next, prev,
+    phase, picks, thirdPlaceRanking,
+    start, toggleTeam,
     toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset, loadSaved,
   } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket, matches } = useBracketStore()
   const { user, loading: authLoading, savedFixture, fixtureLoading, fixtureLoaded, signInWithGoogle, signOut, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
-  const pickerRef = useRef<HTMLDivElement>(null)
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [showSaveModal, setShowSaveModal] = useState(false)
@@ -69,13 +68,6 @@ export function Pronostico() {
     }
     prevChampionRef.current = champion
   }, [champion])
-
-  // Scroll al último grupo — debe estar antes de los early returns (Rules of Hooks)
-  const isLastGroup = currentGroupIndex === GROUPS.length - 1
-  useEffect(() => {
-    if (phase !== 'picking' || !isLastGroup || !pickerRef.current) return
-    pickerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, [isLastGroup, phase])
 
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
@@ -294,76 +286,54 @@ export function Pronostico() {
   }
 
   // ── Fase de grupos (picking) ─────────────────────────────────
-  const group = GROUPS[currentGroupIndex]
-  const selected = picks[group.id] ?? []
-  const isFirst = currentGroupIndex === 0
-  const isLast = isLastGroup
-  const canAdvance = selected.length === 3
   const allGroupsDone = GROUPS.every((g) => (picks[g.id] ?? []).length === 3)
   const completedCount = GROUPS.filter((g) => (picks[g.id] ?? []).length === 3).length
 
   return (
-    <div className={styles.page}>
+    <div className={styles.pickingPage}>
+      <div className={styles.pickingHeader}>
+        <h2 className={styles.title}>Fase de Grupos</h2>
+        <p className={styles.subtitle}>
+          Elegí 1°, 2° y 3° clasificado de cada grupo · {completedCount} de {GROUPS.length} completados
+        </p>
 
-      {/* Stepper */}
-      <div className={styles.stepper}>
-        {GROUPS.map((g, i) => {
-          const done   = (picks[g.id] ?? []).length === 3
-          const active = i === currentGroupIndex
-          return (
-            <div
-              key={g.id}
-              className={`${styles.step} ${done ? styles.stepDone : ''} ${active ? styles.stepActive : ''}`}
-            >
-              {g.id}
-            </div>
-          )
-        })}
+        {/* Indicador de progreso por grupo */}
+        <div className={styles.groupIndicator}>
+          {GROUPS.map((g) => {
+            const done = (picks[g.id] ?? []).length === 3
+            return (
+              <div key={g.id} className={styles.groupIndicatorItem}>
+                <span className={`${styles.groupIndicatorLetter} ${done ? styles.groupIndicatorDone : ''}`}>
+                  {g.id}
+                </span>
+                <span className={`${styles.groupIndicatorBar} ${done ? styles.groupIndicatorBarDone : ''}`} />
+              </div>
+            )
+          })}
+        </div>
       </div>
 
-      <p className={styles.progress}>
-        Grupo {currentGroupIndex + 1} de {GROUPS.length} · {completedCount} completados
-      </p>
-
-      {/* Picker */}
-      <div className={styles.pickerWrap} ref={pickerRef}>
-        <GroupPicker
-          group={group}
-          selected={selected}
-          onToggle={(teamName) => toggleTeam(group.id, teamName)}
-        />
+      <div className={styles.groupsGrid}>
+        {GROUPS.map((g) => (
+          <GroupPicker
+            key={g.id}
+            group={g}
+            selected={picks[g.id] ?? []}
+            onToggle={(teamName) => toggleTeam(g.id, teamName)}
+          />
+        ))}
       </div>
 
-      {/* Navegación */}
-      <div className={styles.nav}>
-        <button className={styles.navBtn} onClick={prev} disabled={isFirst}>
-          ← Anterior
-        </button>
-
-        {isLast ? (
-          canAdvance && allGroupsDone ? (
-            <button className={styles.finishBtn} onClick={startThirdPhase}>
-              Rankear terceros →
-            </button>
-          ) : (
-            <button className={styles.navBtnPrimary} disabled>
-              Siguiente →
-            </button>
-          )
-        ) : (
-          <button
-            className={styles.navBtnPrimary}
-            onClick={() => next(GROUPS.length)}
-            disabled={!canAdvance}
-          >
-            Siguiente grupo →
+      <div className={styles.pickingFooter}>
+        {allGroupsDone && (
+          <button className={styles.finishBtn} onClick={startThirdPhase}>
+            Rankear terceros →
           </button>
         )}
+        <button className={styles.resetBtn} onClick={reset}>
+          Reiniciar pronóstico
+        </button>
       </div>
-
-      <button className={styles.resetBtn} onClick={reset}>
-        Reiniciar pronóstico
-      </button>
     </div>
   )
 }

@@ -463,6 +463,76 @@
   line-height: 1.6;
 }
 
+/* ---- PICKING PAGE (todos los grupos) ---- */
+.pickingPage {
+  padding: var(--space-4);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.pickingHeader {
+  text-align: center;
+}
+
+.groupIndicator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.groupIndicatorItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.groupIndicatorLetter {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  letter-spacing: 0.04em;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.groupIndicatorDone {
+  color: var(--color-primary-600);
+  opacity: 1;
+}
+
+.groupIndicatorBar {
+  width: 24px;
+  height: 3px;
+  border-radius: 99px;
+  background-color: var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.groupIndicatorBarDone {
+  background-color: var(--color-primary-600);
+}
+
+.groupsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.pickingFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-8);
+}
+
 /* ---- BRACKET PAGE ---- */
 .bracketPage {
   padding: var(--space-6) var(--space-8) 100px;

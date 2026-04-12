@@ -20,10 +20,6 @@ export function GroupPicker({ group, selected, onToggle }: GroupPickerProps) {
         <span className={styles.groupId}>{group.id}</span>
       </div>
 
-      <p className={styles.hint}>
-        Elegí en orden: primero, segundo y tercer clasificado
-      </p>
-
       <ul className={styles.list}>
         {group.teams.map((team) => {
           const posIdx = selected.indexOf(team.name);
