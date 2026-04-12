@@ -238,15 +238,18 @@
 
 .bracketActionBtn {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
   border: 1px solid transparent;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   background: transparent;
   color: var(--color-text);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
@@ -437,4 +440,28 @@
 .mobileNavBtn:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+/* ── Durante captura: fondo blanco, bordes y texto suaves ── */
+[data-capturing] {
+  --color-border: #e8e8e8;
+}
+
+[data-capturing] .matchCard,
+[data-capturing] .centerCard,
+[data-capturing] .mobileMatchCard {
+  background-color: #ffffff !important;
+  border-color: #e8e8e8 !important;
+}
+
+[data-capturing] .teamSlot {
+  color: #6b7280 !important;
+}
+
+[data-capturing] .slotName {
+  color: #6b7280 !important;
+}
+
+[data-capturing] .seedLabel {
+  color: #9ca3af !important;
 }

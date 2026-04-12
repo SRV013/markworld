@@ -18,11 +18,18 @@ export function useBracketShare(): UseBracketShareReturn {
     try {
       const { toPng } = await import('html-to-image')
       const el = shareRef.current
-      const dataUrl = await toPng(el, {
-        pixelRatio: 2,
-        backgroundColor: '#ffffff',
-        style: { overflow: 'visible' },
-      })
+      el.setAttribute('data-capturing', '')
+      let dataUrl: string
+      try {
+        dataUrl = await toPng(el, {
+          pixelRatio: 2,
+          backgroundColor: '#ffffff',
+          style: { overflow: 'visible' },
+          filter: (node: Element) => !(node as HTMLElement).hasAttribute?.('data-no-capture'),
+        })
+      } finally {
+        el.removeAttribute('data-capturing')
+      }
 
       // dataUrl → Blob
       const res = await fetch(dataUrl)

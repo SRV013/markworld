@@ -197,7 +197,7 @@ function CenterPanel({ final, champion, locked, onPick }: CenterPanelProps) {
         </div>
       )}
       {/* ── Final ── */}
-      <p className={styles.centerLabel}>Final</p>
+      <p className={styles.centerLabel}>Campeón</p>
       {final && <CenterCard match={final} locked={locked} height={FINAL_MH} onPick={onPick} />}
     </div>
   )
@@ -547,6 +547,7 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
           const centerX  = (3 * COL + MW + 5 * COL - CENTER_SHRINK) / 2
           return (
             <div
+              data-no-capture=""
               className={styles.bracketActions}
               style={{ top: sfBottom, left: centerX, transform: 'translateX(-50%)' }}
             >
@@ -557,11 +558,11 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
                   disabled={sharing || !champion}
                   title="Compartir fixture como imagen"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="13" r="4"/>
                   </svg>
-                  {sharing ? 'Generando…' : 'Compartir'}
+                  {sharing ? 'Generando…' : 'Screenshot'}
                 </button>
               )}
               {onReset && (
@@ -570,7 +571,7 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
                   onClick={onReset}
                   title="Reiniciar pronóstico"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="1 4 1 10 7 10"/>
                     <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
                   </svg>
