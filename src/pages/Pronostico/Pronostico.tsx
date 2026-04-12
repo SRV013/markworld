@@ -8,6 +8,7 @@ import { GroupPicker } from '@/components/GroupPicker/GroupPicker'
 import { ThirdPlacePicker } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import type { ThirdEntry } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import { Bracket } from '@/components/Bracket/Bracket'
+import { useBracketShare } from '@/hooks/useBracketShare'
 import { GROUPS } from '@/data/worldCup2026'
 import { buildInitialBracket } from '@/utils/buildBracket'
 import styles from './Pronostico.module.css'
@@ -47,6 +48,7 @@ export function Pronostico() {
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
   const [showSaveModal, setShowSaveModal] = useState(false)
+  const { shareRef, sharing, share } = useBracketShare()
 
   // Cargar fixture desde Firestore al loguear (solo una vez por sesión)
   useEffect(() => {
@@ -167,11 +169,13 @@ export function Pronostico() {
           )}
         </div>
 
-        <Bracket locked={!!savedFixture} />
-
-        <button className={styles.resetBtn} onClick={handleReset}>
-          Reiniciar pronóstico completo
-        </button>
+        <Bracket
+          ref={shareRef}
+          locked={!!savedFixture}
+          onShare={() => share(user?.uid ?? '')}
+          onReset={handleReset}
+          sharing={sharing}
+        />
 
         {/* Modal guardar fixture */}
         {showSaveModal && champion && (

@@ -3,34 +3,6 @@
   padding-bottom: var(--space-8);
 }
 
-@media (max-width: 768px) {
-  .outer {
-    padding-right: 100px;
-  }
-}
-
-/* ── Encabezados de ronda ─────────────────── */
-.headers {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--space-3);
-}
-
-.roundHeader {
-  flex-shrink: 0;
-  text-align: center;
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--color-text-muted);
-  padding: var(--space-2) 0;
-}
-
-.finalHeader {
-  color: var(--color-primary-500);
-}
-
 /* ── Contenedor del cuadro ────────────────── */
 .bracket {
   position: relative;
@@ -44,18 +16,17 @@
   flex-direction: column;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background-color: color-mix(in srgb, var(--color-bg-subtle) 85%, transparent);
+  background-color: #ffffff;
   overflow: hidden;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.matchCard:hover {
-  border-color: var(--color-primary-400);
+[data-theme='dark'] .matchCard {
+  background-color: var(--color-bg-subtle);
 }
 
-.finalCard {
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+.matchCard:hover {
+  border-color: var(--color-primary-400);
 }
 
 .seedLabel {
@@ -84,6 +55,7 @@
   width: 100%;
   color: var(--color-text);
   min-width: 0;
+  min-height: 38px;
   transition: background-color 100ms;
 }
 
@@ -106,6 +78,17 @@
   color: var(--color-primary-300);
 }
 
+/* Ganador con estilo dorado (panel central) */
+.teamSlot.winnerWarm {
+  background: linear-gradient(90deg, rgba(251,191,36,0.2), rgba(251,191,36,0.08));
+  color: #b45309;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .teamSlot.winnerWarm {
+  color: #d97706;
+}
+
 .teamSlot.champion {
   background: linear-gradient(90deg, rgba(251,191,36,0.2), rgba(251,191,36,0.08));
   color: #b45309;
@@ -124,8 +107,8 @@
 }
 
 .slotFlag {
-  width: 22px;
-  height: 16px;
+  width: 20px;
+  height: 14px;
   flex-shrink: 0;
   border-radius: 2px;
   overflow: hidden;
@@ -155,4 +138,303 @@
   height: 1px;
   background-color: var(--color-border);
   flex-shrink: 0;
+}
+
+/* ── Panel central (Final) ────────────────── */
+.centerPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.centerLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-primary-500);
+  text-align: center;
+  margin: 0 0 var(--space-2);
+}
+
+.centerCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-primary-400);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12);
+}
+
+[data-theme='dark'] .centerCard {
+  background-color: var(--color-bg-subtle);
+}
+
+.centerCardFinal {
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.12);
+}
+
+/* ── Campeón flotando sobre la Final ─────── */
+.centerChampionBlock {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  pointer-events: none;
+}
+
+.centerChampionTrophy {
+  font-size: 4rem;
+  line-height: 1.2;
+}
+
+.centerChampionTeam {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.06));
+  border: 1px solid rgba(251,191,36,0.4);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  white-space: nowrap;
+}
+
+.centerChampionFlag {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.centerChampionName {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: #b45309;
+}
+
+[data-theme='dark'] .centerChampionName {
+  color: #fbbf24;
+}
+
+/* ── Botones de acción (compartir/reiniciar) ─ */
+.bracketActions {
+  position: absolute;
+  display: flex;
+  gap: var(--space-2);
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+}
+
+.bracketActionBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.bracketActionBtn:not(:disabled):hover {
+  background-color: var(--color-hover);
+  border-color: var(--color-border);
+}
+
+.bracketActionBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.bracketActionBtnReset {
+  color: var(--color-text-muted);
+}
+
+/* ─────────── Vista mobile ───────────────── */
+.mobileView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-2) 0;
+}
+
+.mobileTabs {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+  scrollbar-width: none;
+}
+
+.mobileTabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mobileTab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.mobileTabActive {
+  background: var(--color-primary-600);
+  border-color: var(--color-primary-600);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.mobileTabDone {
+  border-color: var(--color-primary-400);
+}
+
+.mobileTabCheck {
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+}
+
+.mobileProgress {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+.mobileChampion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.04));
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: var(--radius-lg);
+}
+
+.mobileChampionTrophy {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.mobileChampionTeam {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mobileChampionFlag {
+  width: 26px;
+  height: 18px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.mobileChampionName {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: #b45309;
+}
+
+[data-theme='dark'] .mobileChampionName {
+  color: #fbbf24;
+}
+
+.mobileMatchList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.mobileMatchCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .mobileMatchCard {
+  background-color: var(--color-bg-subtle);
+}
+
+.mobileFinalCard {
+  border-color: rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 0 2px rgba(251,191,36,0.1);
+}
+
+.mobileSeedLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: var(--space-1) var(--space-3) 0;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .teamSlot {
+    min-height: 44px;
+  }
+
+  .slotFlag {
+    width: 22px;
+    height: 16px;
+  }
+}
+
+.mobileNav {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.mobileNavBtn {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mobileNavBtn:not(:disabled):hover {
+  background-color: var(--color-hover);
+  color: var(--color-text);
+}
+
+.mobileNavBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
 }

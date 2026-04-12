@@ -62,20 +62,28 @@ export const useBracketStore = create<BracketState>()(
           const isPlayable = !!match.teamA && !!match.teamB
           if (!isPlayable) return state
 
+          // Slot del perdedor en M32: M29 → slot A, M30 → slot B
+          const thirdSlot = matchId === 'M29' ? 'A' : matchId === 'M30' ? 'B' : null
+
           // Toggle: si ya es ganador, lo deselecciona
           if (match.winner === clickedTeam) {
             match.winner = null
             matches[idx] = match
             matches = propagate(matches, match.nextMatchId, match.nextSlot, null)
-            // Restaurar nuestro partido (propagate solo toca partidos downstream)
             matches[idx] = match
+            // Limpiar perdedor en 3er puesto
+            if (thirdSlot) matches = propagate(matches, 'M32', thirdSlot, null)
             return { matches }
           }
+
+          const loser = clickedTeam === match.teamA ? match.teamB : match.teamA
 
           match.winner = clickedTeam
           matches[idx] = match
           matches = propagate(matches, match.nextMatchId, match.nextSlot, clickedTeam)
           matches[idx] = match
+          // Propagar perdedor a 3er puesto
+          if (thirdSlot) matches = propagate(matches, 'M32', thirdSlot, loser)
           return { matches }
         }),
 

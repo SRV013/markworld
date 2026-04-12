@@ -1,6 +1,6 @@
-export type Round = 'R32' | 'R16' | 'QF' | 'SF' | 'F'
+export type Round = 'R32' | 'R16' | 'QF' | 'SF' | 'F' | '3P'
 
-export const ROUNDS: Round[] = ['R32', 'R16', 'QF', 'SF', 'F']
+export const ROUNDS: Round[] = ['R32', 'R16', 'QF', 'SF', 'F', '3P']
 
 export const ROUND_LABELS: Record<Round, string> = {
   R32: '16avos',
@@ -8,6 +8,7 @@ export const ROUND_LABELS: Record<Round, string> = {
   QF:  'Cuartos',
   SF:  'Semis',
   F:   'Final',
+  '3P': '3er Puesto',
 }
 
 export const ROUND_MATCH_COUNT: Record<Round, number> = {
@@ -16,6 +17,7 @@ export const ROUND_MATCH_COUNT: Record<Round, number> = {
   QF:  4,
   SF:  2,
   F:   1,
+  '3P': 1,
 }
 
 export interface BracketMatch {
