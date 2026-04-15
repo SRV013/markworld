@@ -338,8 +338,12 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
     }
 
     if (prev.lR32 === -1) {
-      // Primer render: guardar estado actual sin scrollear
+      // Primer render: guardar estado actual
       prevDone.current = { lR32: lR32Done, lR16: lR16Done, lQF: lQFDone, rR32: rR32Done, rR16: rR16Done, rQF: rQFDone, sf: sfDone }
+      // Si el cuadro ya está completo al abrir, centrar en la Final
+      if (champion) {
+        scrollToCol((3 * COL + MW + 5 * COL - CENTER_SHRINK) / 2 - FINAL_MW / 2)
+      }
       return
     }
 
@@ -361,7 +365,7 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
     }
 
     prevDone.current = { lR32: lR32Done, lR16: lR16Done, lQF: lQFDone, rR32: rR32Done, rR16: rR16Done, rQF: rQFDone, sf: sfDone }
-  }, [lR32Done, lR16Done, lQFDone, rR32Done, rR16Done, rQFDone, sfDone])
+  }, [lR32Done, lR16Done, lQFDone, rR32Done, rR16Done, rQFDone, sfDone, champion])
 
   const leftRounds  = ['R32', 'R16', 'QF', 'SF'] as Round[]
   const rightRounds = ['SF', 'QF', 'R16', 'R32'] as Round[]
