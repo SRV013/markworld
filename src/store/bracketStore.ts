@@ -34,8 +34,9 @@ function propagate(
   if (slot === 'A') match.teamA = newTeam
   else match.teamB = newTeam
 
-  // Si el equipo que cambia era el ganador → limpiar y propagar
-  if (match.winner !== null && match.winner === prevTeam) {
+  // Si el equipo que cambia era el ganador, o si se elimina un equipo del partido
+  // (el partido queda incompleto y el ganador ya no es válido)
+  if (match.winner !== null && (match.winner === prevTeam || newTeam === null)) {
     match.winner = null
     result[idx] = match
     return propagate(result, match.nextMatchId, match.nextSlot, null)

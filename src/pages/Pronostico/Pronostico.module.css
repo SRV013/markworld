@@ -188,16 +188,24 @@
     var(--color-secondary-600)
   );
   color: #ffffff;
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   font-weight: 700;
   cursor: pointer;
-  transition: opacity var(--transition-fast);
+  transition: opacity var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
 }
 
-.finishBtn:hover {
+.finishBtn:hover:not(:disabled) {
   opacity: 0.9;
+}
+
+.finishBtn:disabled {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  cursor: default;
+  opacity: 1;
 }
 
 /* ---- CHAMPION BADGE (clickeable) ---- */
