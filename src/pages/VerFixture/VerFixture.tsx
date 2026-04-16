@@ -49,7 +49,7 @@ export function VerFixture() {
   return (
     <div className={styles.page}>
       <Helmet>
-        <title>Pronóstico de {fixture.displayName} — mark World</title>
+        <title>Pronóstico de {fixture.displayName ?? 'un fanático'} — mark World</title>
       </Helmet>
 
       <div className={styles.header}>
@@ -64,7 +64,7 @@ export function VerFixture() {
           )}
           <div>
             <p className={styles.ownerLabel}>Pronóstico de</p>
-            <h1 className={styles.ownerName}>{fixture.displayName}</h1>
+            <h1 className={styles.ownerName}>{fixture.displayName ?? 'un fanático'}</h1>
           </div>
         </div>
 

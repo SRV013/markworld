@@ -1,0 +1,149 @@
+.card {
+  width: 360px;
+  height: 640px;
+  background: linear-gradient(160deg, #0a0e27 0%, #1a1040 50%, #0d1b3e 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 24px 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.headerLabel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.headerYear {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fbbf24;
+  letter-spacing: 0.04em;
+}
+
+/* ── Héroe ── */
+.heroSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.trophy {
+  font-size: 52px;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
+}
+
+.championFlag {
+  width: 80px;
+  height: 56px;
+  border-radius: 5px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.championName {
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.championSub {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #fbbf24;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Camino al título ── */
+.path {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.pathTitle {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.pathRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.pathRound {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fbbf24;
+  width: 56px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.pathVs {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.pathOpponent {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pathFlag {
+  width: 16px;
+  height: 11px;
+  border-radius: 1px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* ── Footer ── */
+.footer {
+  width: 100%;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.footerUrl {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.03em;
+}
