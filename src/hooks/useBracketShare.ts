@@ -24,26 +24,6 @@ interface UseBracketShareReturn {
   share: (data: ShareData) => Promise<void>
 }
 
-/** Cropea una dataUrl a 9:16 centrado horizontalmente */
-async function cropTo916(dataUrl: string): Promise<string> {
-  return new Promise((resolve) => {
-    const img = new Image()
-    img.onload = () => {
-      const cropH = img.height
-      const cropW = Math.round(cropH * 9 / 16)
-      const cropX = Math.round((img.width - cropW) / 2)
-
-      const canvas = document.createElement('canvas')
-      canvas.width  = cropW
-      canvas.height = cropH
-
-      const ctx = canvas.getContext('2d')!
-      ctx.drawImage(img, cropX, 0, cropW, cropH, 0, 0, cropW, cropH)
-      resolve(canvas.toDataURL('image/png'))
-    }
-    img.src = dataUrl
-  })
-}
 
 export function useBracketShare(): UseBracketShareReturn {
   const shareRef = useRef<HTMLDivElement>(null)
@@ -89,11 +69,8 @@ export function useBracketShare(): UseBracketShareReturn {
         filter: (node: Element) => !(node as HTMLElement).hasAttribute?.('data-no-capture'),
       })
 
-      // 3. Cropear a 9:16 centrado en el Final (que está en el centro horizontal)
-      const croppedDataUrl = await cropTo916(fullDataUrl)
-
-      // 4. Convertir a File y compartir
-      const res  = await fetch(croppedDataUrl)
+      // 3. Convertir a File y compartir
+      const res  = await fetch(fullDataUrl)
       const blob = await res.blob()
       const file = new File([blob], 'mi-pronostico-wc2026.png', { type: 'image/png' })
 
