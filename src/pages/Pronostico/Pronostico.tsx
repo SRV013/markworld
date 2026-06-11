@@ -25,7 +25,7 @@ export function Pronostico() {
   const { user, savedFixture, fixtureLoaded, signInWithGoogle, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
-  const { shareRef, sharing, share } = useBracketShare()
+  const { sharing, share, copied } = useBracketShare()
   const { shareId } = useShareStore()
 
   // Cargar fixture desde Firestore al loguear (solo una vez por sesión)
@@ -117,9 +117,6 @@ export function Pronostico() {
         })
         await refreshFixture(user.uid)
         setSaved(true)
-        setTimeout(() => {
-          setSaved(false)
-        }, 2000)
       } catch (e) {
         console.error('Error guardando fixture:', e)
       } finally {
@@ -142,20 +139,20 @@ export function Pronostico() {
         </div>
 
         <Bracket
-          ref={shareRef}
           locked={!!savedFixture}
-          onShare={() => share({
-            shareId: user?.uid ?? shareId,
-            champion: champion!,
-            matches,
-            picks,
-            thirdPlaceRanking,
-          })}
-          onSave={handleSave}
+          onShare={
+            savedFixture
+              ? () => share({ shareId: user!.uid, champion: champion! })
+              : !user
+                ? () => share({ shareId, champion: champion!, saveData: { matches, picks, thirdPlaceRanking } })
+                : undefined
+          }
+          onSave={user && !savedFixture ? handleSave : undefined}
           onReset={handleReset}
           sharing={sharing}
           saving={saving}
           saved={saved}
+          copied={copied}
         />
 
       </div>
