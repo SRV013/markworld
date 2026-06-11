@@ -29,7 +29,6 @@ export function useBracketShare(): UseBracketShareReturn {
     if (sharing) return
     setSharing(true)
     try {
-      // Solo guarda si los datos aún no están en Firestore (usuario anónimo)
       if (saveData) {
         const { matches, picks, thirdPlaceRanking } = saveData
         await setDoc(doc(db, 'pronosticos', shareId), {
@@ -54,16 +53,11 @@ export function useBracketShare(): UseBracketShareReturn {
       }
 
       const shareUrl = `${window.location.origin}/ver/${shareId}`
-      const title = 'Pronóstico del Mundial 2026'
-      const text = `🏆 ${champion} campeón — mirá mi pronóstico`
-
-      if (navigator.share) {
-        await navigator.share({ title, text, url: shareUrl })
-      } else {
+      try {
         await navigator.clipboard.writeText(shareUrl)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 3000)
-      }
+      } catch { /* URL queda visible en la barra del navegador */ }
+      setCopied(true)
+      setTimeout(() => setCopied(false), 3000)
     } finally {
       setSharing(false)
     }

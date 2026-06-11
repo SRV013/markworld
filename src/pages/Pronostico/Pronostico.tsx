@@ -46,6 +46,13 @@ export function Pronostico() {
     prevChampionRef.current = champion
   }, [champion])
 
+  // Actualiza la URL del navegador al link compartible cuando hay fixture guardado
+  useEffect(() => {
+    if (savedFixture && user && phase === 'bracket') {
+      window.history.replaceState(null, '', `/ver/${user.uid}`)
+    }
+  }, [savedFixture, user, phase])
+
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
     return (
@@ -140,13 +147,15 @@ export function Pronostico() {
 
         <Bracket
           locked={!!savedFixture}
-          onShare={
-            savedFixture
-              ? () => share({ shareId: user!.uid, champion: champion! })
-              : !user
-                ? () => share({ shareId, champion: champion!, saveData: { matches, picks, thirdPlaceRanking } })
-                : undefined
-          }
+          onShare={async () => {
+            if (!champion) return
+            if (savedFixture) {
+              await share({ shareId: user!.uid, champion })
+            } else {
+              await share({ shareId, champion, saveData: { matches, picks, thirdPlaceRanking } })
+              window.history.replaceState(null, '', `/ver/${shareId}`)
+            }
+          }}
           onSave={user && !savedFixture ? handleSave : undefined}
           onReset={handleReset}
           sharing={sharing}
