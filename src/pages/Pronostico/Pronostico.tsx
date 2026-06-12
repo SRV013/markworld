@@ -7,6 +7,7 @@ import { ThirdPlacePicker } from '@/components/ThirdPlacePicker/ThirdPlacePicker
 import type { ThirdEntry } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import { Bracket } from '@/components/Bracket/Bracket'
 import { ShareModal } from '@/components/ShareModal/ShareModal'
+import { useShareStore } from '@/store/shareStore'
 import { GROUPS } from '@/data/worldCup2026'
 import { buildInitialBracket } from '@/utils/buildBracket'
 import styles from './Pronostico.module.css'
@@ -20,6 +21,7 @@ export function Pronostico() {
   } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket, matches } = useBracketStore()
   const { user, savedFixture, fixtureLoaded, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
+  const { shareId, anonymouslySaved, setAnonymouslySaved } = useShareStore()
   const [showModal, setShowModal] = useState(false)
 
   // Cargar fixture desde Firestore al loguear (solo una vez por sesión)
@@ -41,6 +43,7 @@ export function Pronostico() {
     }
     if (champion && champion !== prevChampionRef.current) {
       if (user) refreshFixture(user.uid)
+      if (anonymouslySaved) setAnonymouslySaved(false)
       if (!savedFixture) setShowModal(true)
     }
     prevChampionRef.current = champion
@@ -96,6 +99,7 @@ export function Pronostico() {
       reset()
       resetBracket()
       resetFixtureLoaded()
+      setAnonymouslySaved(false)
     }
 
     return (
@@ -124,7 +128,7 @@ export function Pronostico() {
             matches={matches}
             picks={picks}
             thirdPlaceRanking={thirdPlaceRanking}
-            initialSavedId={savedFixture && user ? user.uid : undefined}
+            initialSavedId={savedFixture && user ? user.uid : (anonymouslySaved ? shareId : undefined)}
             onClose={() => setShowModal(false)}
           />
         )}

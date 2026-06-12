@@ -27,7 +27,7 @@ export function ShareModal({
   champion, matches, picks, thirdPlaceRanking, initialSavedId, onClose,
 }: ShareModalProps) {
   const { user, signInWithGoogle, refreshFixture } = useAuthStore()
-  const { shareId } = useShareStore()
+  const { shareId, setAnonymouslySaved, setSavedMeta, savedName, savedAt } = useShareStore()
   const [phase, setPhase] = useState<Phase>(initialSavedId ? 'done' : 'form')
   const [savedId, setSavedId] = useState<string | null>(initialSavedId ?? null)
   const [customName, setCustomName] = useState('')
@@ -65,6 +65,8 @@ export function ShareModal({
         savedAt: serverTimestamp(),
       })
       if (uid) await refreshFixture(uid)
+      else setAnonymouslySaved(true)
+      setSavedMeta(displayName, new Date().toISOString())
       setSavedId(docId)
       setPhase('done')
       window.history.replaceState(null, '', `/ver/${docId}`)
@@ -147,6 +149,18 @@ export function ShareModal({
         {/* Listo — mostrar link */}
         {phase === 'done' && (
           <div className={styles.done}>
+            {(savedName ?? user?.displayName ?? savedAt) && (
+              <div className={styles.savedMeta}>
+                {(savedName ?? user?.displayName) && (
+                  <strong className={styles.savedDisplayName}>{savedName ?? user?.displayName}</strong>
+                )}
+                {savedAt && (
+                  <span className={styles.savedDate}>
+                    {new Date(savedAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                )}
+              </div>
+            )}
             <p className={styles.urlLabel}>Link de tu pronóstico:</p>
             <div className={styles.urlBox}>{shareUrl}</div>
             <div className={styles.shareRow}>
@@ -178,7 +192,7 @@ export function ShareModal({
               </button>
             </div>
             <button className={styles.backBtn} onClick={onClose}>
-              Volver al bracket
+              Volver al pronóstico
             </button>
           </div>
         )}
