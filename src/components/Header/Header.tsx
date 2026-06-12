@@ -9,11 +9,12 @@ const NAV_LINKS = [
   { to: "/mundiales", label: "Mundiales" },
   { to: "/campeones", label: "Campeones" },
   { to: "/fixture", label: "Fixture 2026" },
+  { to: "/pronostico", label: "Tu pronóstico" },
 ];
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
-  const { user, signInWithGoogle, signOut } = useAuthStore();
+  const { user, savedFixture, signInWithGoogle, signOut } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const submenuRef = useRef<HTMLDivElement>(null);
@@ -160,13 +161,15 @@ export function Header() {
                         {user.displayName}
                       </span>
                     </div>
-                    <NavLink
-                      to="/pronostico"
-                      className={styles.submenuItem}
-                      onClick={() => setSubmenuOpen(false)}
-                    >
-                      🏆 Ver mi pronóstico
-                    </NavLink>
+                    {savedFixture && (
+                      <NavLink
+                        to={`/ver/${user!.uid}`}
+                        className={styles.submenuItem}
+                        onClick={() => setSubmenuOpen(false)}
+                      >
+                        🏆 Ver mi pronóstico
+                      </NavLink>
+                    )}
                     <button
                       className={styles.submenuItem}
                       onClick={() => {
