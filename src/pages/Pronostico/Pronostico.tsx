@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { usePronosticoStore } from '@/store/pronosticoStore'
 import { useBracketStore } from '@/store/bracketStore'
 import { useAuthStore } from '@/store/authStore'
-import { db } from '@/lib/firebase'
 import { GroupPicker } from '@/components/GroupPicker/GroupPicker'
 import { ThirdPlacePicker } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import type { ThirdEntry } from '@/components/ThirdPlacePicker/ThirdPlacePicker'
 import { Bracket } from '@/components/Bracket/Bracket'
-import { useBracketShare } from '@/hooks/useBracketShare'
-import { useShareStore } from '@/store/shareStore'
+import { ShareModal } from '@/components/ShareModal/ShareModal'
 import { GROUPS } from '@/data/worldCup2026'
 import { buildInitialBracket } from '@/utils/buildBracket'
 import styles from './Pronostico.module.css'
@@ -22,11 +19,8 @@ export function Pronostico() {
     toggleThirdRank, startThirdPhase, backToGroups, startBracket, reset, loadSaved,
   } = usePronosticoStore()
   const { initializeBracket, reset: resetBracket, matches } = useBracketStore()
-  const { user, savedFixture, fixtureLoaded, signInWithGoogle, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
-  const [saved, setSaved] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const { sharing, share, copied } = useBracketShare()
-  const { shareId } = useShareStore()
+  const { user, savedFixture, fixtureLoaded, refreshFixture, markFixtureLoaded, resetFixtureLoaded } = useAuthStore()
+  const [showModal, setShowModal] = useState(false)
 
   // Cargar fixture desde Firestore al loguear (solo una vez por sesión)
   useEffect(() => {
@@ -37,16 +31,22 @@ export function Pronostico() {
   }, [user, savedFixture, fixtureLoaded])
 
   const champion = matches.find((m) => m.round === 'F')?.winner ?? null
+  const isInitialRender = useRef(true)
   const prevChampionRef = useRef<string | null>(null)
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      prevChampionRef.current = champion
+      return
+    }
     if (champion && champion !== prevChampionRef.current) {
       if (user) refreshFixture(user.uid)
-      setSaved(false)
+      if (!savedFixture) setShowModal(true)
     }
     prevChampionRef.current = champion
   }, [champion])
 
-  // Actualiza la URL del navegador al link compartible cuando hay fixture guardado
+  // Actualiza la URL cuando el fixture ya está guardado en la nube
   useEffect(() => {
     if (savedFixture && user && phase === 'bracket') {
       window.history.replaceState(null, '', `/ver/${user.uid}`)
@@ -98,39 +98,6 @@ export function Pronostico() {
       resetFixtureLoaded()
     }
 
-    const handleSave = async () => {
-      if (!champion) return
-      if (!user) { signInWithGoogle(); return }
-      setSaving(true)
-      try {
-        await setDoc(doc(db, 'pronosticos', user.uid), {
-          uid: user.uid,
-          displayName: user.displayName ?? null,
-          photoURL: user.photoURL ?? null,
-          champion,
-          picks,
-          thirdPlaceRanking,
-          matches: matches.map((m) => ({
-            id: m.id,
-            round: m.round,
-            seedLabel: m.seedLabel ?? '',
-            teamA: m.teamA ?? null,
-            teamB: m.teamB ?? null,
-            winner: m.winner ?? null,
-            nextMatchId: m.nextMatchId ?? null,
-            nextSlot: m.nextSlot ?? null,
-          })),
-          savedAt: serverTimestamp(),
-        })
-        await refreshFixture(user.uid)
-        setSaved(true)
-      } catch (e) {
-        console.error('Error guardando fixture:', e)
-      } finally {
-        setSaving(false)
-      }
-    }
-
     return (
       <div className={styles.bracketPage}>
         <div className={styles.bracketPageHeader}>
@@ -147,23 +114,20 @@ export function Pronostico() {
 
         <Bracket
           locked={!!savedFixture}
-          onShare={async () => {
-            if (!champion) return
-            if (savedFixture) {
-              await share({ shareId: user!.uid, champion })
-            } else {
-              await share({ shareId, champion, saveData: { matches, picks, thirdPlaceRanking } })
-              window.history.replaceState(null, '', `/ver/${shareId}`)
-            }
-          }}
-          onSave={user && !savedFixture ? handleSave : undefined}
+          onOpenShare={() => setShowModal(true)}
           onReset={handleReset}
-          sharing={sharing}
-          saving={saving}
-          saved={saved}
-          copied={copied}
         />
 
+        {showModal && champion && (
+          <ShareModal
+            champion={champion}
+            matches={matches}
+            picks={picks}
+            thirdPlaceRanking={thirdPlaceRanking}
+            initialSavedId={savedFixture && user ? user.uid : undefined}
+            onClose={() => setShowModal(false)}
+          />
+        )}
       </div>
     )
   }

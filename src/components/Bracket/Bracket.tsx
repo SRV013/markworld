@@ -272,25 +272,15 @@ function ConnectorSVGRight({ fromRoundIdx, fromCount, left }: ConnectorProps) {
 interface BracketProps {
   locked?: boolean
   matches?: BracketMatch[]
-  onShare?: () => void
-  onSave?: () => void
+  onOpenShare?: () => void
   onReset?: () => void
-  sharing?: boolean
-  saving?: boolean
-  saved?: boolean
-  copied?: boolean
 }
 
 export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket({
   locked = false,
   matches: propMatches,
-  onShare,
-  onSave,
+  onOpenShare,
   onReset,
-  sharing = false,
-  saving = false,
-  saved = false,
-  copied = false,
 }, ref) {
   const { matches: storeMatches, pickWinner } = useBracketStore()
   const matches = propMatches ?? storeMatches
@@ -430,71 +420,43 @@ export const Bracket = forwardRef<HTMLDivElement, BracketProps>(function Bracket
         ))}
 
         {/* Botones flotantes: debajo de las SF, centrados en el hueco */}
-        {(onShare || onSave || onReset) && (() => {
+        {(onOpenShare || onReset) && (() => {
           const sfBottom = getTop(3, 0) + MH + 70
           const centerX  = (3 * COL + MW + 5 * COL - CENTER_SHRINK) / 2
           return (
-            <>
-              {/* Panel secundario: Compartir + Reiniciar */}
-              <div
-                data-no-capture=""
-                className={styles.bracketActions}
-                style={{ top: sfBottom, left: centerX, transform: 'translateX(-50%)' }}
-              >
-                {onShare && (
-                  <button
-                    className={styles.bracketActionBtn}
-                    onClick={onShare}
-                    disabled={sharing || !champion}
-                    title="Compartir link del pronóstico"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                    </svg>
-                    {sharing ? 'Compartiendo…' : copied ? '¡Copiado!' : 'Compartir link'}
-                  </button>
-                )}
-                {onReset && (
-                  <button
-                    className={`${styles.bracketActionBtn} ${styles.bracketActionBtnReset}`}
-                    onClick={onReset}
-                    title="Reiniciar pronóstico"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="1 4 1 10 7 10"/>
-                      <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
-                    </svg>
-                    Reiniciar
-                  </button>
-                )}
-              </div>
-
-              {/* Card: Guardar en nube */}
-              {onSave && (
-                <div
-                  data-no-capture=""
-                  className={styles.bracketSaveCard}
-                  style={{ top: sfBottom + 162, left: centerX, transform: 'translateX(-50%)' }}
+            <div
+              data-no-capture=""
+              className={styles.bracketActions}
+              style={{ top: sfBottom, left: centerX, transform: 'translateX(-50%)' }}
+            >
+              {onOpenShare && champion && (
+                <button
+                  className={styles.bracketActionBtn}
+                  onClick={onOpenShare}
+                  title={locked ? 'Compartir pronóstico' : 'Guardar y compartir pronóstico'}
                 >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={styles.bracketSaveCardIcon}>
-                    <polyline points="16 16 12 12 8 16"/>
-                    <line x1="12" y1="12" x2="12" y2="21"/>
-                    <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
                   </svg>
-                  <p className={styles.bracketSaveCardText}>
-                    {saved ? '¡Pronóstico guardado en la nube!' : 'Logeate para guardar tu pronóstico en la nube'}
-                  </p>
-                  <button
-                    className={`${styles.bracketSaveCardBtn}${saved ? ` ${styles.bracketSaveCardBtnDone}` : ''}`}
-                    onClick={onSave}
-                    disabled={saving || saved || !champion}
-                  >
-                    {saved ? '✓ Guardado' : saving ? 'Guardando…' : 'Guardar en nube'}
-                  </button>
-                </div>
+                  {locked ? 'Compartir' : 'Guardar pronóstico'}
+                </button>
               )}
-            </>
+              {onReset && (
+                <button
+                  className={`${styles.bracketActionBtn} ${styles.bracketActionBtnReset}`}
+                  onClick={onReset}
+                  title="Reiniciar pronóstico"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="1 4 1 10 7 10"/>
+                    <path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+                  </svg>
+                  Reiniciar
+                </button>
+              )}
+            </div>
           )
         })()}
 
