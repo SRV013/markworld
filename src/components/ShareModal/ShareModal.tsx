@@ -190,7 +190,7 @@ export function ShareModal({
               Se guardará como <strong>{user.displayName}</strong>
             </p>
             <button className={styles.primaryBtn} onClick={handleSaveLoggedIn}>
-              Guardar y obtener link →
+              Guardar
             </button>
           </div>
         )}
@@ -218,7 +218,7 @@ export function ShareModal({
               onClick={handleSaveAnonymous}
               disabled={!customName.trim()}
             >
-              Guardar y obtener link →
+              Guardar
             </button>
             <div className={styles.divider}><span>o asocialo a tu cuenta</span></div>
             <button className={styles.googleBtn} onClick={handleGoogleLogin}>
