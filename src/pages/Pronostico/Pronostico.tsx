@@ -49,13 +49,6 @@ export function Pronostico() {
     prevChampionRef.current = champion
   }, [champion])
 
-  // Actualiza la URL cuando el fixture ya está guardado en la nube
-  useEffect(() => {
-    if (savedFixture && user && phase === 'bracket') {
-      window.history.replaceState(null, '', `/ver/${user.uid}`)
-    }
-  }, [savedFixture, user, phase])
-
   // ── Intro ────────────────────────────────────────────────────
   if (phase === 'intro') {
     return (
@@ -119,7 +112,7 @@ export function Pronostico() {
         <Bracket
           locked={!!savedFixture}
           onOpenShare={() => setShowModal(true)}
-          onReset={handleReset}
+          onReset={!savedFixture && !anonymouslySaved ? handleReset : undefined}
         />
 
         {showModal && champion && (
