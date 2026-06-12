@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { Helmet } from 'react-helmet-async'
 import { db } from '@/lib/firebase'
 import { Bracket } from '@/components/Bracket/Bracket'
+import { ShareModal } from '@/components/ShareModal/ShareModal'
 import { GROUPS } from '@/data/worldCup2026'
 import type { SavedFixture } from '@/store/authStore'
 import styles from './VerFixture.module.css'
@@ -16,6 +17,7 @@ export function VerFixture() {
   const [fixture, setFixture] = useState<SavedFixture | null>(null)
   const [loading, setLoading]   = useState(true)
   const [error, setError]       = useState<string | null>(null)
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     if (!uid) return
@@ -76,7 +78,18 @@ export function VerFixture() {
         )}
       </div>
 
-      <Bracket locked matches={fixture.matches} />
+      <Bracket locked matches={fixture.matches} onOpenShare={() => setShowModal(true)} />
+
+      {showModal && fixture.champion && (
+        <ShareModal
+          champion={fixture.champion}
+          matches={fixture.matches}
+          picks={fixture.picks}
+          thirdPlaceRanking={fixture.thirdPlaceRanking}
+          initialSavedId={uid}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   )
 }
