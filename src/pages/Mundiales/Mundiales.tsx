@@ -17,6 +17,7 @@ import mascot2010 from '@/assets/mascotas/2010.webp'
 import mascot2014 from '@/assets/mascotas/2014.webp'
 import mascot2018 from '@/assets/mascotas/2018.webp'
 import mascot2022 from '@/assets/mascotas/2022.webp'
+import mascot2026 from '@/assets/mascotas/2026.webp'
 import styles from './Mundiales.module.css'
 
 const MASCOTS: Record<number, string> = {
@@ -37,6 +38,7 @@ const MASCOTS: Record<number, string> = {
   2014: mascot2014,
   2018: mascot2018,
   2022: mascot2022,
+  2026: mascot2026,
 }
 
 type TeamResult = { team: string; position: number; points: number }
@@ -97,6 +99,12 @@ function flagIcon(country: string): string {
   return FLAG_ICON[normalizeTeam(country)] ?? FLAG_ICON[country] ?? 'un'
 }
 
+// ── Sedes organizadas por más de un país (ej. "Canadá, México y Estados Unidos") ──
+function hostFlags(host: string): string[] {
+  const parts = host.split(/,\s*|\s+y\s+|\//).map((p) => p.trim()).filter(Boolean)
+  return (parts.length > 0 ? parts : [host]).map(flagIcon)
+}
+
 // ── Stats sidebar ─────────────────────────────────────────────
 const championsWins = (() => {
   const wins: Record<string, number> = {}
@@ -126,13 +134,13 @@ export function Mundiales() {
     <div className={styles.page}>
       <Helmet>
         <title>Historia de Mundiales — mark World</title>
-        <meta name="description" content="Todas las ediciones de la Copa del Mundo desde Uruguay 1930 hasta Qatar 2022. Podios, participantes y ranking histórico de campeones." />
+        <meta name="description" content="Todas las ediciones de la Copa del Mundo desde Uruguay 1930 hasta España 2026. Podios, participantes y ranking histórico de campeones." />
         <meta property="og:title" content="Historia de Mundiales de Fútbol — mark World" />
-        <meta property="og:description" content="22 ediciones, podios completos y ranking acumulado de todos los mundiales." />
+        <meta property="og:description" content="23 ediciones, podios completos y ranking acumulado de todos los mundiales." />
       </Helmet>
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>Historia de Mundiales</h1>
-        <p className={styles.subtitle}>{cups.length} ediciones · 1930 – 2022</p>
+        <p className={styles.subtitle}>{cups.length} ediciones · 1930 – 2026</p>
       </div>
 
       <div className={styles.layout}>
@@ -141,14 +149,19 @@ export function Mundiales() {
         <div className={styles.cups}>
           {cups.map((cup) => {
             const third = cup.teams.find((t) => t.position === 3)
+            const flags = hostFlags(cup.host)
 
             return (
               <article key={cup.year} className={styles.cupCard}>
 
-                {/* Header: bandera + sede + año + mascota */}
+                {/* Header: bandera(s) + sede + año + mascota */}
                 <div className={styles.cupHeader}>
                   <div className={styles.cupTop}>
-                    <span className={`fi fi-${flagIcon(cup.host)} ${styles.hostFlag}`} />
+                    <div className={`${styles.hostFlags} ${flags.length > 1 ? styles.hostFlagsMulti : ''}`}>
+                      {flags.map((code, i) => (
+                        <span key={`${code}-${i}`} className={`fi fi-${code} ${styles.hostFlag}`} />
+                      ))}
+                    </div>
                     <div className={styles.cupText}>
                       <span className={styles.host}>{cup.host}</span>
                       <span className={styles.year}>{cup.year}</span>

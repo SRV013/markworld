@@ -77,12 +77,24 @@
   gap: 2px;
 }
 
+.hostFlags {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
 .hostFlag {
   width: 3.6rem;
   height: 2.7rem;
   border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.hostFlagsMulti .hostFlag {
+  width: 1.8rem;
+  height: 1.2rem;
 }
 
 .host {

@@ -272,6 +272,14 @@ export const FINAL_MATCHES: Record<number, FinalMatch> = {
       { player: 'Mbappé', minute: 118, pen: true },
     ],
   },
+  2026: {
+    year: 2026,
+    scoreChampion: 1, scoreRunnerUp: 0, extraTime: true,
+    goalsChampion: [
+      { player: 'Ferran Torres', minute: 101 },
+    ],
+    goalsRunnerUp: [],
+  },
 }
 
 export function getFinalSummary(match: FinalMatch, runnerUp: string): string {

@@ -655,6 +655,39 @@ export const CHAMPIONS_PLAYERS: ChampionPlayers[] = [
       { numero: 26, nombre: 'Nahuel Molina' },
     ],
   },
+
+  // ── 2026 – España ───────────────────────────────────────────────
+  {
+    anio: 2026, campeon: 'España', dt: 'Luis de la Fuente',
+    jugadores: [
+      { numero: 1,  nombre: 'David Raya' },
+      { numero: 2,  nombre: 'Marc Pubill' },
+      { numero: 3,  nombre: 'Alejandro Grimaldo' },
+      { numero: 4,  nombre: 'Eric García' },
+      { numero: 5,  nombre: 'Marcos Llorente' },
+      { numero: 6,  nombre: 'Mikel Merino' },
+      { numero: 7,  nombre: 'Ferran Torres' },
+      { numero: 8,  nombre: 'Fabián Ruiz' },
+      { numero: 9,  nombre: 'Gavi' },
+      { numero: 10, nombre: 'Dani Olmo' },
+      { numero: 11, nombre: 'Yéremy Pino' },
+      { numero: 12, nombre: 'Pedro Porro' },
+      { numero: 13, nombre: 'Joan García' },
+      { numero: 14, nombre: 'Aymeric Laporte' },
+      { numero: 15, nombre: 'Álex Baena' },
+      { numero: 16, nombre: 'Rodri Hernández' },
+      { numero: 17, nombre: 'Nico Williams' },
+      { numero: 18, nombre: 'Martín Zubimendi' },
+      { numero: 19, nombre: 'Lamine Yamal' },
+      { numero: 20, nombre: 'Pedri' },
+      { numero: 21, nombre: 'Mikel Oyarzabal' },
+      { numero: 22, nombre: 'Pau Cubarsí' },
+      { numero: 23, nombre: 'Unai Simón' },
+      { numero: 24, nombre: 'Marc Cucurella' },
+      { numero: 25, nombre: 'Víctor Muñoz' },
+      { numero: 26, nombre: 'Borja Iglesias' },
+    ],
+  },
 ]
 
 export const PLAYERS_BY_YEAR: Record<number, ChampionPlayers> = Object.fromEntries(

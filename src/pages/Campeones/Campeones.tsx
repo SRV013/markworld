@@ -25,6 +25,7 @@ import img2010 from '@/assets/equipos/2010.webp'
 import img2014 from '@/assets/equipos/2014.avif'
 import img2018 from '@/assets/equipos/2018.webp'
 import img2022 from '@/assets/equipos/2022.avif'
+import img2026 from '@/assets/equipos/2026.webp'
 import styles from './Campeones.module.css'
 
 const IMAGES: Record<number, string> = {
@@ -50,6 +51,7 @@ const IMAGES: Record<number, string> = {
   2014: img2014,
   2018: img2018,
   2022: img2022,
+  2026: img2026,
 }
 
 const FLAG_ICON: Record<string, string> = {
@@ -99,9 +101,9 @@ export function Campeones() {
     <div className={styles.page}>
       <Helmet>
         <title>Campeones Mundiales de Fútbol — mark World</title>
-        <meta name="description" content="Todos los campeones de la Copa del Mundo desde Uruguay 1930 hasta Argentina 2022. Planteles, jugadores y técnicos de cada selección campeona." />
+        <meta name="description" content="Todos los campeones de la Copa del Mundo desde Uruguay 1930 hasta España 2026. Planteles, jugadores y técnicos de cada selección campeona." />
         <meta property="og:title" content="Campeones Mundiales — mark World" />
-        <meta property="og:description" content="22 selecciones campeonas, sus planteles completos y dorsales. Fútbol mundial desde 1930." />
+        <meta property="og:description" content="23 ediciones, sus planteles completos y dorsales. Fútbol mundial desde 1930." />
       </Helmet>
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>Campeones Mundiales</h1>

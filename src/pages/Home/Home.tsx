@@ -15,13 +15,13 @@ const SECTIONS = [
     to: "/mundiales",
     icon: "📖",
     title: "Mundiales",
-    desc: "Todas las ediciones desde Uruguay 1930 hasta Qatar 2022. Podios, participantes, campeones históricos y ranking acumulado.",
+    desc: "Todas las ediciones desde Uruguay 1930 hasta España 2026. Podios, participantes, campeones históricos y ranking acumulado.",
   },
   {
     to: "/campeones",
     icon: "🥇",
     title: "Todos los Campeones",
-    desc: "Los 22 campeones del mundo. Planteles completos con dorsales, técnicos y fotos de cada edición.",
+    desc: "Los 23 campeones del mundo. Planteles completos con dorsales, técnicos y fotos de cada edición.",
   },
   {
     to: "/fixture",
@@ -45,7 +45,7 @@ export function Home() {
         <meta property="og:title" content="mark World — Mundiales de Fútbol" />
         <meta
           property="og:description"
-          content="Toda la Copa del Mundo en un solo lugar. 22 ediciones, 48 equipos 2026, pronósticos y estadísticas."
+          content="Toda la Copa del Mundo en un solo lugar. 23 ediciones, 48 equipos 2026, pronósticos y estadísticas."
         />
         <meta property="og:type" content="website" />
       </Helmet>
